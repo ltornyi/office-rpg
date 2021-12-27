@@ -4,11 +4,12 @@ import { deleteSaveSlot, getSaveSlotInfo } from '../utils/saveload';
 import { SaveSlot } from './SaveSlot';
 
 export type menuPropsType = {
-  onSlotLoad: Function
+  onSlotLoad: Function,
+  initialSlotSelection: number;
 }
 
 export const Menu = (props: menuPropsType) => {
-  const [selectedSlot, setSelectedSlot] = useState(-1);
+  const [selectedSlot, setSelectedSlot] = useState(props.initialSlotSelection);
   const [slots, setSlots] = useState([getSaveSlotInfo(0), getSaveSlotInfo(1), getSaveSlotInfo(2)]);
 
   const deleteSlot = () => {

@@ -9,13 +9,18 @@ function App() {
   const [slotToLoad, setSlotToLoad] = useState(-1);
   const navigate = useNavigate();
 
+  const slotSelected = (slot: number) => {
+    setSlotToLoad(slot);
+    navigate('/game');
+  }
+
   return (
     <Routes>
       <Route path='/' element={
-        <Menu onSlotLoad={(slot: number) => {
-          setSlotToLoad(slot);
-          navigate('/game')
-        }} />
+        <Menu
+          onSlotLoad={slotSelected}
+          initialSlotSelection={slotToLoad}
+        />
       } />
       <Route path='/game' element={<Game selectedSlot={slotToLoad}/>} />
     </Routes>
