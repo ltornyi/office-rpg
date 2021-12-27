@@ -1,0 +1,41 @@
+.menucontainer {
+  width: 60%;
+  height: 100%;
+  margin-left:auto;
+  margin-right:auto;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: 15% 15% 15% 55%;
+  grid-template-areas:
+    "slot0 slot0"
+    "slot1 slot1"
+    "slot2 slot2"
+    "delete load";
+}
+
+.saveslot {
+  border: 2px solid orange;
+  border-radius: 25px;
+  margin: 15px 25px;
+  min-height: 1em;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.saveslot.selected {
+  background-color: lightcyan;
+}
+
+.slot0 {grid-area: slot0}
+.slot1 {grid-area: slot1}
+.slot2 {grid-area: slot2}
+
+.deletegame {
+  grid-area: delete;
+  text-align: center;
+}
+.loadgame {
+  grid-area: load;
+  text-align: center;
+}

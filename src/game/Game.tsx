@@ -1,8 +1,12 @@
 import React from 'react';
 import './Game.css';
 
-export const Game = () => {
+export type gamePropsType = {
+  selectedSlot: number
+}
+
+export const Game = (props: gamePropsType) => {
   return (
-    <div>Game works</div>
+    <div>Game works, selected slot is {props.selectedSlot}</div>
   );
 }
