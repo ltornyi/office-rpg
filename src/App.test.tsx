@@ -9,6 +9,6 @@ test('dummy test', () => {
       <App />
     </BrowserRouter>
   );
-  const mydiv = screen.getByText('Menu works');
-  expect(mydiv).toBeInTheDocument();
+  const loadButton = screen.getByText('Load');
+  expect(loadButton).toBeInTheDocument();
 });

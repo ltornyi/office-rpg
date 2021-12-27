@@ -37,13 +37,20 @@ const useAnimationFrame = (callback: Function, run: boolean) => {
     return () => {
       cancelAnimationFrame(requestRef.current);
     };
-  }, [run]); //we intentionally ignore the animate dependency to make sure this effect runs only once
+  }, [run]); //eslint-disable-line react-hooks/exhaustive-deps
+  //we intentionally ignore the animate dependency to make sure this effect runs only once
 }
 
 export const Game = (props: gamePropsType) => {
   const navigate = useNavigate();
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [run, setRun] = useState(false);
+
+  useEffect(() => {
+    if (! [0,1,2].includes(props.selectedSlot)) {
+      navigate('/');
+    }
+  });
 
   useAnimationFrame( (deltaSeconds: number) => {
     setElapsedSeconds(prev => prev + deltaSeconds)
