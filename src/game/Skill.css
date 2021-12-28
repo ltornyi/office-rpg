@@ -1,0 +1,28 @@
+.skillrow {
+  flex: 0 1 auto;
+  margin-bottom: 0.3em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 2px solid orange;
+}
+
+.skillrow > .skilllevel {
+  flex: 0 0 3em;
+  height: 3em;
+  line-height: 3em;
+  text-align: center;
+}
+
+.skill-upgradeable {
+  background-color: lightcyan;
+}
+
+.skillrow > .skilltextcontainer {
+  flex: 3;
+  text-align: left;
+}
+
+.skillupgradecost > span.notenoughresource {
+  color: red;
+}
