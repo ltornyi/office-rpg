@@ -21,7 +21,7 @@ export const Skills = (props: SkillsPropType) => {
       {Object.keys(props.player.skills).map(skillname => {
         const skillnameEnum = SkillEnumFromString(skillname);
         if (skillnameEnum && skillVisible(props.player, skillnameEnum))
-          return <Skill player={props.player} skillName={skillnameEnum}/>
+          return <Skill key={skillname} player={props.player} skillName={skillnameEnum}/>
         else
           return null;
       })}
