@@ -5,6 +5,8 @@ export enum ResourceName {
   INFLUENCE = 'Influence'
 }
 
+export type ResourceNameNotEnergy = Exclude<ResourceName, ResourceName.ENERGY>
+
 export const ResourceNameLookup = {
   'Energy': ResourceName.ENERGY,
   'Productivity': ResourceName.PRODUCTIVITY,

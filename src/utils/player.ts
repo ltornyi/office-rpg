@@ -1,13 +1,16 @@
-import { ResourceName, SkillName } from "./definitions"
+import { processGenActionsElapsedTime } from "./activityCalculations"
+import { ResourceName, ResourceNameNotEnergy, SkillName } from "./definitions"
+import { generatorActionLevel, playerActivitiesLevel } from "./experience"
 import { processResourcesElapsedTime } from "./resourceCalculations"
 
-type TgeneratorActionMasteryLevel = {
+export type TgeneratorActionMasteryLevel = {
   mastery: number,
   level: number,
-  experience: number
+  experience: number,
+  cooldownLeft: number
 }
 
-type TgeneratorActionMasteryLevels = {
+export type TgeneratorActionMasteryLevels = {
   [ResourceName.PRODUCTIVITY]: TgeneratorActionMasteryLevel,
   [ResourceName.KNOWLEDGE]: TgeneratorActionMasteryLevel,
   [ResourceName.INFLUENCE]: TgeneratorActionMasteryLevel,
@@ -57,9 +60,9 @@ export const buildNewPlayer = () => {
     activitiesLevel: 1,
     activitiesTotalExperience: 0,
     generatorActionMasteryLevels: {
-      [ResourceName.PRODUCTIVITY]: {mastery: 1, level: 1, experience: 0},
-      [ResourceName.KNOWLEDGE]: {mastery: 1, level: 1, experience: 0},
-      [ResourceName.INFLUENCE]: {mastery: 1, level: 1, experience: 0},
+      [ResourceName.PRODUCTIVITY]: {mastery: 1, level: 1, experience: 0, cooldownLeft: 0},
+      [ResourceName.KNOWLEDGE]: {mastery: 1, level: 1, experience: 0, cooldownLeft: 0},
+      [ResourceName.INFLUENCE]: {mastery: 1, level: 1, experience: 0, cooldownLeft: 0},
     },
     resources: {
       [ResourceName.ENERGY]: {name: ResourceName.ENERGY, baseIncreaseAmount: 0, baseIncreasePercent: 0, regenIncreaseAmount: 0, regenIncreasePercent: 0, unlocked: true, value:0},
@@ -81,7 +84,20 @@ export const generateNewPlayerState = (player: Player, elapsedSeconds: number) =
   const newPlayer = JSON.parse(JSON.stringify(player)) as Player;
 
   processResourcesElapsedTime(newPlayer.resources, elapsedSeconds);
+  processGenActionsElapsedTime(newPlayer.generatorActionMasteryLevels, elapsedSeconds);
   
   newPlayer.lastUpdateTimeStamp = Date.now();
   return newPlayer;
+}
+
+export const gainActivitiesExperience = (player: Player, experience: number) => {
+  player.activitiesTotalExperience += experience;
+  player.activitiesLevel = playerActivitiesLevel(player.activitiesTotalExperience);
+}
+
+export const gainGeneratorActionExperience = (player: Player, forResourceName: ResourceNameNotEnergy, experience: number) => {
+  const curr = player.generatorActionMasteryLevels[forResourceName];
+  curr.experience += experience;
+  curr.mastery = generatorActionLevel(curr.experience);
+  gainActivitiesExperience(player, experience);
 }

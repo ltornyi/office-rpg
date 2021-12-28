@@ -1,0 +1,33 @@
+.genactionrow {
+  flex: 0 1 auto;
+  margin-bottom: 0.3em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 2px solid orange;
+}
+
+.genactionrow > .genactioncdn {
+  flex: 0 0 3em;
+  height: 3em;
+  line-height: 3em;
+  text-align: center;
+}
+
+.genactionrow > .genactiontextcontainer {
+  flex: 1;
+  text-align: left;
+}
+
+.genactionrow > .genactionmasterycontainer {
+  flex: 1;
+  text-align: left;
+}
+
+.genaction-canactivate {
+  background-color: lightcyan;
+}
+
+.genactioncost.notenoughresource {
+  color: red;
+}
