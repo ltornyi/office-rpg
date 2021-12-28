@@ -94,7 +94,7 @@ export type SkillDefinitionType =
 export const FocusDefinition: SkillDefinitionType = {
   name: SkillName.FOCUS,
   resourceUnlock: {resourceName: ResourceName.PRODUCTIVITY, skillLevelNeeded: 2},
-  levelingSetup: [{resourceName: ResourceName.ENERGY, initialCost: 50, costMultiplier: 1.15}]
+  levelingSetup: [{resourceName: ResourceName.ENERGY, initialCost: 50, costMultiplier: 1.25}]
 };
 
 export const MemoryDefinition: SkillDefinitionType = {
