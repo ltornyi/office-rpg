@@ -1,5 +1,5 @@
 import { ResourceDefinitions, ResourceName } from "./definitions";
-import { Tresource, Tresources } from "./saveload";
+import { Player, Tresource, Tresources } from "./saveload";
 
 export const resourceCapacity = (res: Tresource): number => {
   const resourceBaseCapacity = ResourceDefinitions[res.name].baseCapacity;
@@ -29,4 +29,13 @@ export const processResourcesElapsedTime = (resources: Tresources, elapsedSecond
   processResourceElapsedTime(resources[ResourceName.PRODUCTIVITY], elapsedSeconds)
   processResourceElapsedTime(resources[ResourceName.KNOWLEDGE], elapsedSeconds)
   processResourceElapsedTime(resources[ResourceName.INFLUENCE], elapsedSeconds)
+}
+
+export const generateNewPlayerState = (player: Player, elapsedSeconds: number) => {
+  const newPlayer = JSON.parse(JSON.stringify(player)) as Player;
+
+  processResourcesElapsedTime(newPlayer.resources, elapsedSeconds);
+  
+  newPlayer.lastUpdateTimeStamp = Date.now();
+  return newPlayer;
 }

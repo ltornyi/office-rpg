@@ -63,7 +63,7 @@ export type Tskills = {
   [SkillName.SENIORITY]: Tskill,
 }
 
-export type SavedGame = {
+export type Player = {
   lastUpdateTimeStamp: number,
   activitiesLevel: number,
   activitiesTotalExperience: number,
@@ -72,8 +72,8 @@ export type SavedGame = {
   skills: Tskills
 }
 
-const buildNewSaveGame = () => {
-  const val: SavedGame = {
+const buildNewPlayer = () => {
+  const val: Player = {
     lastUpdateTimeStamp: Date.now(),
     activitiesLevel: 1,
     activitiesTotalExperience: 0,
@@ -98,14 +98,18 @@ const buildNewSaveGame = () => {
   return val;
 }
 
-export const loadSaveSlot = (slot: number): SavedGame => {
+export const loadSaveSlot = (slot: number): Player => {
   const savegame = localStorage.getItem(saveName(slot));
   if (savegame) {
-    const restoredPlayer = JSON.parse(savegame) as SavedGame;
-    //The line below disables offline progression
-    restoredPlayer.lastUpdateTimeStamp = Date.now();
-    return restoredPlayer;
+    //The lines below implement offline progression
+    // const restoredPlayer = JSON.parse(savegame) as Player;
+    // return generateNewPlayerState(restoredPlayer, (Date.now() - restoredPlayer.lastUpdateTimeStamp)/1000);
+    return JSON.parse(savegame) as Player;
   } else {
-    return buildNewSaveGame()
+    return buildNewPlayer()
   }
+}
+
+export const savePlayerToSlot = (player: Player, slot: number) => {
+  localStorage.setItem(saveName(slot), JSON.stringify(player));
 }

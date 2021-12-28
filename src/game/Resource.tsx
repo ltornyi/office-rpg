@@ -1,6 +1,6 @@
 import React from 'react';
 import { oneDecimal } from '../utils/formatters';
-import { resourceCapacity, resourceRegenRate } from '../utils/resourceCalculations';
+import { resourceCapacity, resourceRegenRate } from '../utils/calculations';
 import { Tresource } from '../utils/saveload';
 
 export const Resource = (props: {resource: Tresource}) => {
