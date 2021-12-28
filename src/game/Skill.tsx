@@ -22,20 +22,20 @@ export const Skill = (props: SkillPropType) => {
       <div className='skilllevel'>{skill.level}</div>
       <div className='skilltextcontainer'>
         <div className='skilltext'>{skill.name}</div>
-        <SkillUpgradeCosts costs={levelingCosts} canLevelArr={canLevelArr}/>
+        <SkillUpgradeCosts costs={levelingCosts} canLevelArr={canLevelArr} skillName={props.skillName}/>
       </div>
     </div>
   )
 }
 
-const SkillUpgradeCosts = (props: {costs: SkillLevelingCosts, canLevelArr: SkillCanLevelUpArr}) => {
+const SkillUpgradeCosts = (props: {costs: SkillLevelingCosts, canLevelArr: SkillCanLevelUpArr, skillName: SkillName}) => {
   return (
     <div className='skillupgradecost'>
       {props.costs.map( c => {
         const canLevelItem = props.canLevelArr.find((item) => item.resourceName === c.resourceName);
         const canLevel = canLevelItem && canLevelItem.canLevel;
         const resText = c.resourceName.substring(0,1) + ' : ' + oneDecimal(c.cost)
-        return <span className={canLevel ? '' : 'notenoughresource'}>{resText}</span>
+        return <span key={props.skillName + '-' + c.resourceName} className={canLevel ? '' : 'notenoughresource'}>{resText}</span>
       })}
     </div>
   );
