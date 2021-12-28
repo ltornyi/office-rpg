@@ -1,0 +1,38 @@
+.resourcerow {
+  flex: 0 1 auto;
+  margin-bottom: 2em;
+  display: flex;
+  flex-direction: column;
+}
+
+.resourcerow > .resourcetext {
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.resourcerow > .resourcetext > .reslabel {
+  flex: 1;
+  text-align: left;
+  margin-right: 1px;
+}
+.resourcerow > .resourcetext > .resregen {
+  flex: 1;
+  text-align: center;
+}
+.resourcerow > .resourcetext > .resvalue {
+  flex: 0 0 30%;
+  text-align: right;
+}
+
+.resourcerow > .resourcebar {
+  flex: 0 1 auto;
+  height: 0.3em;
+  background-color: white;
+}
+
+.resourcerow > .resourcebar > .resprogress {
+  height: 100%;
+  width: 0%;
+  background-color: orange;
+}

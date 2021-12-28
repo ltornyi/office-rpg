@@ -1,5 +1,6 @@
 import React from 'react';
-import { ResourceName } from '../utils/definitions';
+import './Resources.css';
+import { ResourceEnumFromString } from '../utils/definitions';
 import { Tresources } from '../utils/saveload';
 import {Resource} from './Resource';
 
@@ -9,8 +10,15 @@ type ResourcesPropType = {
 
 export const Resources = (props: ResourcesPropType) => {
   return (
-    <div className='gameresources'>
-      <Resource resource={props.resources[ResourceName.ENERGY]} />
+    <div className='gamepanel resourcescontainer'>
+      <div className='resourcesheader'>Resources</div>
+      {Object.keys(props.resources).map(resname => {
+        const resnameEnum = ResourceEnumFromString(resname);
+        if (resnameEnum && props.resources[resnameEnum].unlocked)
+          return <Resource key={resname} resource={props.resources[resnameEnum]} />
+        else
+          return null;
+      })}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { ResourceDefinitions, ResourceName } from "./definitions";
+import { ResourceDefinitions, ResourceName, SkillDefinitions, SkillName } from "./definitions";
 import { Player, Tresource, Tresources } from "./saveload";
 
 export const resourceCapacity = (res: Tresource): number => {
@@ -38,4 +38,20 @@ export const generateNewPlayerState = (player: Player, elapsedSeconds: number) =
   
   newPlayer.lastUpdateTimeStamp = Date.now();
   return newPlayer;
+}
+
+export const skillVisible = (player: Player, skill: SkillName) => {
+  //if the skill is leveled, then it's visible
+  if (player.skills[skill].level > 0)
+    return true;
+  //if the skill is at level 0, then it's visible if the player has 70% of all resources needed for level 1 of the skill
+  const levelingSetup = SkillDefinitions[skill].levelingSetup;
+  let hasEnough = true;
+  for (const lvlSetup of levelingSetup) {
+    if (lvlSetup.initialCost * 0.7 > player.resources[lvlSetup.resourceName].value) {
+      hasEnough = false;
+      break;
+    }
+  }
+  return hasEnough;
 }

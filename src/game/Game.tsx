@@ -51,11 +51,12 @@ export const Game = (props: gamePropsType) => {
           setRun(true);
         }}>Start</button>
         <button onClick={() => setRun(false)}>Stop</button>
+        <button onClick={() => savePlayerToSlot(player, props.selectedSlot)}>Save</button>
         <button onClick={() => navigate('/')}>Goto main menu</button>
       </GameHeader>
       <Resources resources={player.resources}/>
       <Activities />
-      <Skills />
+      <Skills player={player}/>
       <Upgrades />
       <GameFooter />
     </div>

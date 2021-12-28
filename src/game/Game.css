@@ -13,36 +13,9 @@
     "footer footer footer";
 }
 
-.gameheader, .gameresources, .activities, .skills, .upgrades, .gamefooter {
+.gamepanel {
   border: 1px solid orange;
   border-radius: 10px;
   padding: 5px;
   margin: 2px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-.gameheader {
-  grid-area: header;
-}
-
-.gameresources {
-  grid-area: resources;
-}
-
-.activities {
-  grid-area: activities;
-}
-
-.skills {
-  grid-area: skills;
-}
-
-.upgrades {
-  grid-area: upgrades;
-}
-
-.gamefooter {
-  grid-area: footer;
 }

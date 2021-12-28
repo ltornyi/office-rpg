@@ -1,0 +1,11 @@
+.skillscontainer {
+  grid-area: skills;
+  display:flex;
+  flex-direction: column;
+}
+
+.skillsheader {
+  flex: 0;
+  text-align: center;
+  margin-bottom: 10px;
+}

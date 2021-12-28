@@ -5,11 +5,39 @@ export enum ResourceName {
   INFLUENCE = 'Influence'
 }
 
+export const ResourceNameLookup = {
+  'Energy': ResourceName.ENERGY,
+  'Productivity': ResourceName.PRODUCTIVITY,
+  'Knowledge': ResourceName.KNOWLEDGE,
+  'Influence': ResourceName.INFLUENCE,
+}
+
+export const ResourceEnumFromString = (str: string) => {
+  if (str in ResourceNameLookup)
+    return ResourceNameLookup[str as keyof typeof ResourceNameLookup]
+  else
+    return null;
+}
+
 export enum SkillName {
   FOCUS = 'Focus',
   MEMORY = 'Memory',
   CHANGE_MANAGEMENT = 'Change Management',
   SENIORITY = 'Seniority'
+}
+
+export const SkillNameLookup = {
+  'Focus': SkillName.FOCUS,
+  'Memory': SkillName.MEMORY,
+  'Change Management': SkillName.CHANGE_MANAGEMENT,
+  'Seniority': SkillName.SENIORITY,
+}
+
+export const SkillEnumFromString = (str: string) => {
+  if (str in SkillNameLookup)
+    return SkillNameLookup[str as keyof typeof SkillNameLookup]
+  else
+    return null;
 }
 
 export type ResourceDefinitionType = {
@@ -86,3 +114,10 @@ export const SeniorityDefinition: SkillDefinitionType = {
   resourceUnlock: null,
   levelingSetup: [{resourceName: ResourceName.INFLUENCE, initialCost: 10, costMupltiplier: 1.15}]
 };
+
+export const SkillDefinitions = {
+  [SkillName.FOCUS]: FocusDefinition,
+  [SkillName.MEMORY]: MemoryDefinition,
+  [SkillName.CHANGE_MANAGEMENT]: ChangeManagementDefinition,
+  [SkillName.SENIORITY]: SeniorityDefinition,
+}

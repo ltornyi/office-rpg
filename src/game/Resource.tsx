@@ -1,4 +1,5 @@
 import React from 'react';
+import './Resource.css';
 import { oneDecimal } from '../utils/formatters';
 import { resourceCapacity, resourceRegenRate } from '../utils/calculations';
 import { Tresource } from '../utils/saveload';
