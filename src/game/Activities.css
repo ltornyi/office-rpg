@@ -1,3 +1,17 @@
 .activitiescontainer {
   grid-area: activities;
+  display: flex;
+  flex-direction: column;
+}
+
+.activitiesheader {
+  flex: 0;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.activitiessummary {
+  flex: 0 0 3em;
+  margin-bottom: 0.3em;
+  border: 2px solid white;
 }

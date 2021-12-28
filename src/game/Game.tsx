@@ -57,7 +57,7 @@ export const Game = (props: gamePropsType) => {
         <button onClick={() => navigate('/')}>Goto main menu</button>
       </GameHeader>
       <Resources resources={player.resources}/>
-      <Activities />
+      <Activities player={player} />
       <Skills player={player}/>
       <Upgrades />
       <GameFooter />
