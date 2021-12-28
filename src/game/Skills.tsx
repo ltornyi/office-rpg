@@ -1,14 +1,19 @@
 import React from 'react';
-import { skillVisible } from '../utils/calculations';
-import { SkillEnumFromString } from '../utils/definitions';
-import { Player } from '../utils/saveload';
 import './Skills.css';
+import { hasVisibleSkill, skillVisible } from '../utils/skillCalculations';
+import { SkillEnumFromString } from '../utils/definitions';
+import { Player } from '../utils/player';
+
 
 type SkillsPropType = {
   player: Player
 }
 
 export const Skills = (props: SkillsPropType) => {
+  if (!hasVisibleSkill(props.player)) {
+    return null;
+  }
+  
   return (
     <div className='gamepanel skillscontainer'>
       <div className='skillsheader'>Skills</div>

@@ -1,8 +1,9 @@
 import React from 'react';
 import './Resource.css';
 import { oneDecimal } from '../utils/formatters';
-import { resourceCapacity, resourceRegenRate } from '../utils/calculations';
-import { Tresource } from '../utils/saveload';
+import { resourceCapacity, resourceRegenRate } from '../utils/resourceCalculations';
+import { Tresource } from '../utils/player';
+
 
 export const Resource = (props: {resource: Tresource}) => {
   const regenPerSec = resourceRegenRate(props.resource);

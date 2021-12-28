@@ -8,7 +8,7 @@ import { Upgrades } from './Upgrades';
 import { GameFooter } from './GameFooter';
 import { useNavigate } from 'react-router-dom';
 import { loadSaveSlot, savePlayerToSlot} from '../utils/saveload';
-import { generateNewPlayerState } from '../utils/calculations';
+import { generateNewPlayerState } from '../utils/player';
 import { useAnimationFrame } from './useAnimationFrame';
 
 export type gamePropsType = {
@@ -28,6 +28,7 @@ export const Game = (props: gamePropsType) => {
     }
   });
 
+  //Main game loop
   //we can't reference player, elapsedSeconds etc inside this hook
   //because the function we created here closes over it (the value won't change) 
   useAnimationFrame( (currentTime: number, elapsed: number) => {
@@ -35,6 +36,7 @@ export const Game = (props: gamePropsType) => {
     setPlayer(prevPlayer => generateNewPlayerState(prevPlayer, elapsed));
   }, run);
 
+  //Autosave every 30 seconds:
   useEffect( () => {
     if (currentTimestamp - lastAutosaveAt > 30000) {
       savePlayerToSlot(player, props.selectedSlot);
