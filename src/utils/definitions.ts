@@ -85,7 +85,7 @@ type SkillResourceUnlockType = {
 type SkillLevelingSetup = {
   resourceName: ResourceName,
   initialCost: number,
-  costMupltiplier: number
+  costMultiplier: number
 }
 
 export type SkillDefinitionType =
@@ -94,25 +94,25 @@ export type SkillDefinitionType =
 export const FocusDefinition: SkillDefinitionType = {
   name: SkillName.FOCUS,
   resourceUnlock: {resourceName: ResourceName.PRODUCTIVITY, skillLevelNeeded: 2},
-  levelingSetup: [{resourceName: ResourceName.ENERGY, initialCost: 50, costMupltiplier: 1.15}]
+  levelingSetup: [{resourceName: ResourceName.ENERGY, initialCost: 50, costMultiplier: 1.15}]
 };
 
 export const MemoryDefinition: SkillDefinitionType = {
   name: SkillName.MEMORY,
   resourceUnlock: {resourceName: ResourceName.KNOWLEDGE, skillLevelNeeded: 1},
-  levelingSetup: [{resourceName: ResourceName.PRODUCTIVITY, initialCost: 2, costMupltiplier: 1.15}]
+  levelingSetup: [{resourceName: ResourceName.PRODUCTIVITY, initialCost: 2, costMultiplier: 1.15}]
 };
 
 export const ChangeManagementDefinition: SkillDefinitionType = {
   name: SkillName.CHANGE_MANAGEMENT,
   resourceUnlock: {resourceName: ResourceName.INFLUENCE, skillLevelNeeded: 4},
-  levelingSetup: [{resourceName: ResourceName.KNOWLEDGE, initialCost: 5, costMupltiplier: 1.15}]
+  levelingSetup: [{resourceName: ResourceName.KNOWLEDGE, initialCost: 5, costMultiplier: 1.15}]
 };
 
 export const SeniorityDefinition: SkillDefinitionType = {
   name: SkillName.SENIORITY,
   resourceUnlock: null,
-  levelingSetup: [{resourceName: ResourceName.INFLUENCE, initialCost: 10, costMupltiplier: 1.15}]
+  levelingSetup: [{resourceName: ResourceName.INFLUENCE, initialCost: 10, costMultiplier: 1.15}]
 };
 
 export const SkillDefinitions = {
