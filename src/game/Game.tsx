@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import './Game.css';
 import { GameHeader } from './GameHeader';
 import { Resources } from './Resources';
@@ -7,42 +7,26 @@ import { Skills } from './Skills';
 import { Upgrades } from './Upgrades';
 import { GameFooter } from './GameFooter';
 import { useNavigate } from 'react-router-dom';
+import { loadSaveSlot, SavedGame } from '../utils/saveload';
+import { processResourcesElapsedTime } from '../utils/resourceCalculations';
+import { useAnimationFrame } from './useAnimationFrame';
 
 export type gamePropsType = {
   selectedSlot: number
 }
 
-const useAnimationFrame = (callback: Function, run: boolean) => {
-  // from https://css-tricks.com/using-requestanimationframe-with-react-hooks/
-  // also https://github.com/layonez/use-request-animation-frame/blob/main/src/index.tsx
-  const requestRef = useRef(0);
-  const previousTimeRef = useRef(Date.now());
+const generateNewPlayerState = (player: SavedGame, elapsedSeconds: number) => {
+  const newPlayer = JSON.parse(JSON.stringify(player)) as SavedGame;
+
+  processResourcesElapsedTime(newPlayer.resources, elapsedSeconds);
   
-  const animate = () => {
-    const currentTime = Date.now();
-    const deltaSeconds =  (currentTime - previousTimeRef.current) / 1000;
-    callback(deltaSeconds);
-
-    previousTimeRef.current = currentTime;
-    requestRef.current = requestAnimationFrame(animate);
-  };
-
-  useEffect(() => {
-    if (run) {
-      previousTimeRef.current = Date.now();
-      requestRef.current = requestAnimationFrame(animate);
-    } else {
-      cancelAnimationFrame(requestRef.current);
-    }
-    return () => {
-      cancelAnimationFrame(requestRef.current);
-    };
-  }, [run]); //eslint-disable-line react-hooks/exhaustive-deps
-  //we intentionally ignore the animate dependency to make sure this effect runs only once
+  newPlayer.lastUpdateTimeStamp = Date.now();
+  return newPlayer;
 }
 
 export const Game = (props: gamePropsType) => {
   const navigate = useNavigate();
+  const [player, setPlayer] = useState(loadSaveSlot(props.selectedSlot))
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [run, setRun] = useState(false);
 
@@ -52,8 +36,11 @@ export const Game = (props: gamePropsType) => {
     }
   });
 
-  useAnimationFrame( (deltaSeconds: number) => {
-    setElapsedSeconds(prev => prev + deltaSeconds)
+  //we can't reference player, elapsedSeconds etc inside this hook
+  //because the function we created here closes over it (the value won't change) 
+  useAnimationFrame( (currentTime: number, elapsed: number) => {
+    setElapsedSeconds(prev => prev + elapsed);
+    setPlayer(prev => generateNewPlayerState(prev, elapsed))
   }, run);
 
   return (
@@ -67,7 +54,7 @@ export const Game = (props: gamePropsType) => {
         <button onClick={() => setRun(false)}>Stop</button>
         <button onClick={() => navigate('/')}>Goto main menu</button>
       </GameHeader>
-      <Resources />
+      <Resources resources={player.resources}/>
       <Activities />
       <Skills />
       <Upgrades />
