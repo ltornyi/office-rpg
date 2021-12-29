@@ -78,11 +78,11 @@ const skillLevelupImpact = (player: Player, skillName: SkillName) => {
     //Focus increases energy per sec by 2
     player.resources[ResourceName.ENERGY].regenIncreaseAmount += 2;
   } else if (skillName === SkillName.MEMORY) {
-    //memory increase maxKnowledge and maxProductivity by 8 and 3
-    player.resources[ResourceName.KNOWLEDGE].baseIncreaseAmount += 8;
+    //memory increase maxKnowledge and maxProductivity by 6 and 3
+    player.resources[ResourceName.KNOWLEDGE].baseIncreaseAmount += 6;
     player.resources[ResourceName.PRODUCTIVITY].baseIncreaseAmount += 2;
   } else if (skillName === SkillName.CHANGE_MANAGEMENT) {
-    //chamge management increases maxEnergy by 30
+    //change management increases maxEnergy by 30
     player.resources[ResourceName.ENERGY].baseIncreaseAmount += 30;
   } else if (skillName === SkillName.SENIORITY) {
     //seniority increases maxEnergy by %3
