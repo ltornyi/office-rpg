@@ -1,4 +1,4 @@
-import { activateGenAction, canActivateGenAction, canLevelGenAction, genActionEnergyUsage, genActionLevelupResourceName, genActionName, genActionNextLevelResourceNeeded, hasEnoughEnergyToActivateGenAction, levelUpGenAction } from '../utils/activityCalculations'
+import { activateGenAction, canActivateGenAction, canLevelGenAction, genActionEnergyUsage, genActionLevelupResourceName, genActionName, genActionNextLevelResourceNeeded, genActionResourceGenerated, hasEnoughEnergyToActivateGenAction, levelUpGenAction } from '../utils/activityCalculations'
 import { ResourceNameNotEnergy } from '../utils/definitions'
 import { experienceForNextMasteryLevel } from '../utils/experience'
 import { integerPart, oneDecimal } from '../utils/formatters'
@@ -32,9 +32,11 @@ export const GenAction = (props: GenActionPropType) => {
   const nextMasteryExp = experienceForNextMasteryLevel(mastery);
 
   const levelupResNameCostTxt = genActionLevelupResourceName(props.forResourceName) + ': ' + genActionNextLevelResourceNeeded(props.forResourceName, level)
+
+  const tooltipTxt = '+' + integerPart(genActionResourceGenerated(props.player, props.forResourceName)) + ' ' + props.forResourceName;
  
   return (
-    <div className={'genactionrow ' + canActivateClass} onClick={() => activateGenAction(props.player, props.forResourceName)}>
+    <div className={'genactionrow forthis ' + canActivateClass} onClick={() => activateGenAction(props.player, props.forResourceName)}>
       <div className='genactioncdn'>{cooldownLeftTxt}</div>
       <div className='genactiontextcontainer'>
         <div className='genactiontext'>{name}</div>
@@ -54,6 +56,7 @@ export const GenAction = (props: GenActionPropType) => {
           >{levelupResNameCostTxt}</button>
         </div>
       </div>
+      <div className='showthat'>{tooltipTxt}</div>
     </div>
   )
 }

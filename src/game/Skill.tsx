@@ -1,4 +1,4 @@
-import { SkillName } from '../utils/definitions';
+import { SkillDefinitions, SkillName } from '../utils/definitions';
 import { oneDecimal } from '../utils/formatters';
 import { Player } from '../utils/player';
 import { CalcCanLevelup, calcLevelingCosts, canLevelUp, levelUpSkill, SkillCanLevelUpArr, SkillLevelingCosts } from '../utils/skillCalculations';
@@ -14,9 +14,10 @@ export const Skill = (props: SkillPropType) => {
   const levelingCosts = calcLevelingCosts(props.skillName, skill.level);
   const canLevelArr = CalcCanLevelup(props.player, levelingCosts);
   const canLevel = canLevelUp(canLevelArr);
+  const description = SkillDefinitions[props.skillName].description;
   return (
     <div
-      className={'skillrow ' + (canLevel ? 'clickable' : '')}
+      className={'skillrow forthis ' + (canLevel ? 'clickable' : '')}
       onClick={() => levelUpSkill(props.player, props.skillName)}
     >
       <div className='skilllevel'>{skill.level}</div>
@@ -24,6 +25,7 @@ export const Skill = (props: SkillPropType) => {
         <div className='skilltext'>{skill.name}</div>
         <SkillUpgradeCosts costs={levelingCosts} canLevelArr={canLevelArr} skillName={props.skillName}/>
       </div>
+      <div className="showthat" dangerouslySetInnerHTML={{__html: description}}></div>
     </div>
   )
 }

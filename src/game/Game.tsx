@@ -20,7 +20,6 @@ export const Game = (props: gamePropsType) => {
   const [player, setPlayer] = useState(loadSaveSlot(props.selectedSlot))
   const [currentTimestamp, setCurrentTimestamp] = useState(Date.now());
   const [lastAutosaveAt, setLastAutosaveAt] = useState(Date.now());
-  const [run, setRun] = useState(true);
 
   useEffect(() => {
     if (! [0,1,2].includes(props.selectedSlot)) {
@@ -34,7 +33,7 @@ export const Game = (props: gamePropsType) => {
   useAnimationFrame( (currentTime: number, elapsed: number) => {
     setCurrentTimestamp(currentTime);
     setPlayer(prevPlayer => generateNewPlayerState(prevPlayer, elapsed));
-  }, run);
+  }, true);
 
   //Autosave every 30 seconds:
   useEffect( () => {
@@ -47,12 +46,7 @@ export const Game = (props: gamePropsType) => {
   return (
     <div className='gamecontainer'>
       <GameHeader >
-        <p>Game works, selected slot is {props.selectedSlot}, currentTimestamp: {new Date(currentTimestamp).toLocaleString()}</p>
-        <button onClick={() => {
-          setCurrentTimestamp(Date.now());
-          setRun(true);
-        }}>Start</button>
-        <button onClick={() => setRun(false)}>Stop</button>
+        <p>Selected slot is {props.selectedSlot}, currentTimestamp: {new Date(currentTimestamp).toLocaleString()}</p>
         <button onClick={() => savePlayerToSlot(player, props.selectedSlot)}>Save</button>
         <button onClick={() => navigate('/')}>Goto main menu</button>
       </GameHeader>

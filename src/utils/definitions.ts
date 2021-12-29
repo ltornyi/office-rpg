@@ -1,3 +1,5 @@
+import { Player } from "./player";
+
 export enum ResourceName {
   ENERGY = 'Energy',
   PRODUCTIVITY = 'Productivity',
@@ -91,30 +93,41 @@ type SkillLevelingSetup = {
 }
 
 export type SkillDefinitionType =
- {name: SkillName} & {resourceUnlock: SkillResourceUnlockType | null} & {levelingSetup: SkillLevelingSetup[]};
+ {name: SkillName, levelupImpact: Function, description: string } & {resourceUnlock: SkillResourceUnlockType | null} & {levelingSetup: SkillLevelingSetup[]};
 
 export const FocusDefinition: SkillDefinitionType = {
   name: SkillName.FOCUS,
   resourceUnlock: {resourceName: ResourceName.PRODUCTIVITY, skillLevelNeeded: 2},
-  levelingSetup: [{resourceName: ResourceName.ENERGY, initialCost: 50, costMultiplier: 1.25}]
+  levelingSetup: [{resourceName: ResourceName.ENERGY, initialCost: 50, costMultiplier: 1.25}],
+  levelupImpact: (player: Player) => player.resources[ResourceName.ENERGY].regenIncreaseAmount += 2,
+  description: '+2 Energy / second'
 };
 
 export const MemoryDefinition: SkillDefinitionType = {
   name: SkillName.MEMORY,
   resourceUnlock: {resourceName: ResourceName.KNOWLEDGE, skillLevelNeeded: 1},
-  levelingSetup: [{resourceName: ResourceName.PRODUCTIVITY, initialCost: 2, costMultiplier: 1.15}]
+  levelingSetup: [{resourceName: ResourceName.PRODUCTIVITY, initialCost: 2, costMultiplier: 1.15}],
+  levelupImpact: (player: Player) => {
+    player.resources[ResourceName.PRODUCTIVITY].baseIncreaseAmount += 2;
+    player.resources[ResourceName.KNOWLEDGE].baseIncreaseAmount += 6;
+  },
+  description: '+2 Productivity capacity<br>+6 Knowledge capacity'
 };
 
 export const ChangeManagementDefinition: SkillDefinitionType = {
   name: SkillName.CHANGE_MANAGEMENT,
   resourceUnlock: {resourceName: ResourceName.INFLUENCE, skillLevelNeeded: 4},
-  levelingSetup: [{resourceName: ResourceName.KNOWLEDGE, initialCost: 5, costMultiplier: 1.15}]
+  levelingSetup: [{resourceName: ResourceName.KNOWLEDGE, initialCost: 5, costMultiplier: 1.15}],
+  levelupImpact: (player: Player) => player.resources[ResourceName.ENERGY].baseIncreaseAmount += 30,
+  description: '+30 Energy capacity'
 };
 
 export const SeniorityDefinition: SkillDefinitionType = {
   name: SkillName.SENIORITY,
   resourceUnlock: null,
-  levelingSetup: [{resourceName: ResourceName.INFLUENCE, initialCost: 10, costMultiplier: 1.15}]
+  levelingSetup: [{resourceName: ResourceName.INFLUENCE, initialCost: 10, costMultiplier: 1.15}],
+  levelupImpact: (player: Player) => player.resources[ResourceName.ENERGY].baseIncreasePercent += 4,
+  description: '+4% Energy / second'
 };
 
 export const SkillDefinitions = {
