@@ -85,8 +85,8 @@ const skillLevelupImpact = (player: Player, skillName: SkillName) => {
     //change management increases maxEnergy by 30
     player.resources[ResourceName.ENERGY].baseIncreaseAmount += 30;
   } else if (skillName === SkillName.SENIORITY) {
-    //seniority increases maxEnergy by %3
-    player.resources[ResourceName.ENERGY].baseIncreasePercent += 3;
+    //seniority increases maxEnergy by %4
+    player.resources[ResourceName.ENERGY].baseIncreasePercent += 4;
   }
 }
 
