@@ -4,13 +4,12 @@
   margin-left:auto;
   margin-right:auto;
   display: grid;
-  grid-template-columns: 20% 60% 20%;
-  grid-template-rows: 10% 40% 40% 10%;
+  grid-template-columns: 25% auto 25%;
+  grid-template-rows: 10% 50% 40%;
   grid-template-areas:
     "header header header"
     "resources activities skills"
     "upgrades activities skills"
-    "footer footer footer";
 }
 
 .gamepanel {

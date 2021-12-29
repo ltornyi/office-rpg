@@ -5,6 +5,7 @@
   flex-direction: row;
   align-items: center;
   border: 2px solid orange;
+  border-radius: 1em;
 }
 
 .genactionrow > .genactioncdn {

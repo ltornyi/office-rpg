@@ -5,7 +5,6 @@ import { Resources } from './Resources';
 import { Activities } from './Activities';
 import { Skills } from './Skills';
 import { Upgrades } from './Upgrades';
-import { GameFooter } from './GameFooter';
 import { useNavigate } from 'react-router-dom';
 import { loadSaveSlot, savePlayerToSlot} from '../utils/saveload';
 import { generateNewPlayerState } from '../utils/player';
@@ -54,7 +53,6 @@ export const Game = (props: gamePropsType) => {
       <Activities player={player} />
       <Skills player={player}/>
       <Upgrades />
-      <GameFooter />
     </div>
   )
 }
