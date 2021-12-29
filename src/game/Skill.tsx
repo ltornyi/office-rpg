@@ -16,7 +16,7 @@ export const Skill = (props: SkillPropType) => {
   const canLevel = canLevelUp(canLevelArr);
   return (
     <div
-      className={'skillrow ' + (canLevel ? 'skill-upgradeable' : '')}
+      className={'skillrow ' + (canLevel ? 'clickable' : '')}
       onClick={() => levelUpSkill(props.player, props.skillName)}
     >
       <div className='skilllevel'>{skill.level}</div>

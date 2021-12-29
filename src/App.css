@@ -1,0 +1,38 @@
+.btn-primary {
+  color: black;
+  background-color: orange;
+  border-color: orange;
+}
+
+.btn-primary:disabled {
+  color:gray;
+  background-color: peachpuff;
+  border-color: peachpuff;
+}
+
+.btn-secondary {
+  color: white;
+  background-color: gray;
+  border-color: gray;
+}
+
+.btn-secondary:disabled {
+  background-color: lightgray;
+  border-color: lightgray;
+}
+
+.btn {
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  padding: .375rem .75rem;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  pointer-events: none;
+}
+
+.clickable {
+  cursor: pointer;
+  background-color: lightcyan;
+}

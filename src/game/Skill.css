@@ -14,10 +14,6 @@
   text-align: center;
 }
 
-.skill-upgradeable {
-  background-color: lightcyan;
-}
-
 .skillrow > .skilltextcontainer {
   flex: 3;
   text-align: left;

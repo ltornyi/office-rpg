@@ -23,10 +23,10 @@ export const Menu = (props: menuPropsType) => {
       <SaveSlot selectedSlot={selectedSlot} slot={1} info={slots[1]} onclick={()=> setSelectedSlot(1)} />
       <SaveSlot selectedSlot={selectedSlot} slot={2} info={slots[2]} onclick={()=> setSelectedSlot(2)} />
       <div className='deletegame'>
-        <button onClick={deleteSlot} disabled={selectedSlot === -1 || !slots[selectedSlot].exists}>Delete</button>
+        <button className='btn btn-secondary' onClick={deleteSlot} disabled={selectedSlot === -1 || !slots[selectedSlot].exists}>Delete</button>
       </div>
       <div className='loadgame'>
-        <button onClick={() => props.onSlotLoad(selectedSlot)} disabled={selectedSlot === -1}>Load</button>
+        <button className='btn btn-primary' onClick={() => props.onSlotLoad(selectedSlot)} disabled={selectedSlot === -1}>Load</button>
       </div>
     </div>
   );

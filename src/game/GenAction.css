@@ -24,10 +24,6 @@
   text-align: left;
 }
 
-.genaction-canactivate {
-  background-color: lightcyan;
-}
-
 .genactioncost.notenoughresource {
   color: red;
 }

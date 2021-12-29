@@ -11,7 +11,7 @@ type GenActionPropType = {
 }
 
 export const GenAction = (props: GenActionPropType) => {
-  const canActivateClass = canActivateGenAction(props.player, props.forResourceName) ? 'genaction-canactivate' : '';
+  const canActivateClass = canActivateGenAction(props.player, props.forResourceName) ? 'clickable' : '';
   const genActionMastery = props.player.generatorActionMasteryLevels[props.forResourceName];
   let cooldownLeftTxt = '';
   if (genActionMastery.cooldownLeft > 0.01) {

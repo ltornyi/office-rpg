@@ -4,7 +4,7 @@
   margin-left:auto;
   margin-right:auto;
   display: grid;
-  grid-template-columns: 25% 50% 25%;
+  grid-template-columns: 20% 60% 20%;
   grid-template-rows: 10% 40% 40% 10%;
   grid-template-areas:
     "header header header"
