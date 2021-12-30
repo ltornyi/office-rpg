@@ -43,7 +43,8 @@ export const hasEnoughResourceToUpgradeGenAction = (player: Player, forResourceN
 }
 
 export const canUpgradeGenAction = (player: Player, forResourceName: ResourceNameNotEnergy) => {
-  return hasEnoughMasteryToUpgradeGenAction(player, forResourceName) && hasEnoughResourceToUpgradeGenAction(player, forResourceName);
+  return hasEnoughMasteryToUpgradeGenAction(player, forResourceName) && hasEnoughResourceToUpgradeGenAction(player, forResourceName)
+    && !isGenActionOnCooldown(player, forResourceName);
 }
 
 export const genActionCooldownTime = (player: Player, forResourceName: ResourceNameNotEnergy) => {
@@ -91,4 +92,13 @@ export const hasEnoughEnergyToActivateGenAction = (player: Player, forResourceNa
 
 export const canActivateGenAction = (player: Player, forResourceName: ResourceNameNotEnergy) => {
   return (!isGenActionOnCooldown(player, forResourceName) && hasEnoughEnergyToActivateGenAction(player, forResourceName))
+}
+
+export const canDecreaseCurrentLevel = (player: Player, forResourceName: ResourceNameNotEnergy) => {
+  return player.generatorActionMasteryLevels[forResourceName].currentLevel > 1 && !isGenActionOnCooldown(player, forResourceName);
+}
+
+export const canIncreaseCurrentLevel = (player: Player, forResourceName: ResourceNameNotEnergy) => {
+  return player.generatorActionMasteryLevels[forResourceName].currentLevel < player.generatorActionMasteryLevels[forResourceName].maxLevel
+    && !isGenActionOnCooldown(player, forResourceName);
 }

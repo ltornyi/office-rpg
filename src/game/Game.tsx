@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { loadSaveSlot, savePlayerToSlot} from '../utils/saveload';
 import { useAnimationFrame } from './useAnimationFrame';
 import { ResourceNameNotEnergy, SkillName } from '../utils/definitions';
-import { activateGenAction, generateNewPlayerState, levelUpSkill, upgradeGenAction } from './gamefunctions';
+import { activateGenAction, decreaseGenActionCurrentLevel, generateNewPlayerState, increaseGenActionCurrentLevel, levelUpSkill, upgradeGenAction } from './gamefunctions';
 
 export type gamePropsType = {
   selectedSlot: number
@@ -58,6 +58,16 @@ export const Game = (props: gamePropsType) => {
     setPlayer(newPlayer);
   }
 
+  const decreaseGenActionLevel = (forResName: ResourceNameNotEnergy) => {
+    const newPlayer = decreaseGenActionCurrentLevel(player, forResName);
+    setPlayer(newPlayer);
+  }
+
+  const increaseGenActionLevel = (forResName: ResourceNameNotEnergy) => {
+    const newPlayer = increaseGenActionCurrentLevel(player, forResName);
+    setPlayer(newPlayer);
+  }
+
   return (
     <div className='gamecontainer'>
       <GameHeader >
@@ -70,6 +80,8 @@ export const Game = (props: gamePropsType) => {
         player={player}
         activateGenAction={activateThisGenAction}
         upgradeGenAction={upgradeThisGenAction}
+        decreaseCurrentLevel={decreaseGenActionLevel}
+        increaseCurrentLevel={increaseGenActionLevel}
       />
       <Skills player={player} skillLevelup={skillLevelup}/>
       <Upgrades />

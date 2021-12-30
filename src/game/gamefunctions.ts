@@ -1,4 +1,4 @@
-import { canActivateGenAction, canUpgradeGenAction, genActionCooldownTime, genActionEnergyUsage, genActionExperienceGenerated, genActionNextLevelResourceNeeded, genActionResourceGenerated } from "../utils/activityCalculations";
+import { canActivateGenAction, canDecreaseCurrentLevel, canIncreaseCurrentLevel, canUpgradeGenAction, genActionCooldownTime, genActionEnergyUsage, genActionExperienceGenerated, genActionNextLevelResourceNeeded, genActionResourceGenerated } from "../utils/activityCalculations";
 import { GeneratorActionDefinitions, ResourceEnumFromString, ResourceName, ResourceNameNotEnergy, SkillDefinitions, SkillName } from "../utils/definitions";
 import { generatorActionLevel, playerActivitiesLevel } from "../utils/experience";
 import { clonePlayer, Player, TgeneratorActionMasteryLevel, TgeneratorActionMasteryLevels, Tresource, Tresources } from "../utils/player";
@@ -112,6 +112,28 @@ export const activateGenAction = (player: Player, forResourceName: ResourceNameN
     const experienceGenerated = genActionExperienceGenerated(newPlayer, forResourceName);
     gainGeneratorActionExperience(newPlayer, forResourceName, experienceGenerated);
 
+    return newPlayer;
+  } else {
+    return player;
+  }
+}
+
+//called when the current level of a generator action is lowered
+export const decreaseGenActionCurrentLevel = (player: Player, forResourceName: ResourceNameNotEnergy) => {
+  if (canDecreaseCurrentLevel(player, forResourceName)) {
+    const newPlayer = clonePlayer(player);
+    newPlayer.generatorActionMasteryLevels[forResourceName].currentLevel--;
+    return newPlayer;
+  } else {
+    return player;
+  }
+}
+
+//called when the current level of a generator action is increased
+export const increaseGenActionCurrentLevel = (player: Player, forResourceName: ResourceNameNotEnergy) => {
+  if (canIncreaseCurrentLevel(player, forResourceName)) {
+    const newPlayer = clonePlayer(player);
+    newPlayer.generatorActionMasteryLevels[forResourceName].currentLevel++;
     return newPlayer;
   } else {
     return player;

@@ -1,4 +1,4 @@
-import { canActivateGenAction, canUpgradeGenAction, genActionEnergyUsage, genActionLevelupResourceName, genActionName, genActionNextLevelResourceNeeded,
+import { canActivateGenAction, canDecreaseCurrentLevel, canIncreaseCurrentLevel, canUpgradeGenAction, genActionEnergyUsage, genActionLevelupResourceName, genActionName, genActionNextLevelResourceNeeded,
   genActionResourceGenerated, hasEnoughEnergyToActivateGenAction } from '../utils/activityCalculations'
 import { ResourceNameNotEnergy } from '../utils/definitions'
 import { experienceForNextMasteryLevel } from '../utils/experience'
@@ -10,7 +10,9 @@ type GenActionPropType = {
   player: Player,
   forResourceName: ResourceNameNotEnergy,
   activate: () => void,
-  upgrade: () => void
+  upgrade: () => void,
+  decreaseLevel: () => void,
+  increaseLevel: () => void
 }
 
 export const GenAction = (props: GenActionPropType) => {
@@ -36,6 +38,9 @@ export const GenAction = (props: GenActionPropType) => {
 
   const levelupResNameCostTxt = genActionLevelupResourceName(props.forResourceName) + ': ' + genActionNextLevelResourceNeeded(props.forResourceName, genActionMastery.maxLevel)
   const canUpgrade = canUpgradeGenAction(props.player, props.forResourceName);
+
+  const canDecreaseLevel = canDecreaseCurrentLevel(props.player, props.forResourceName);
+  const canIncreaseLevel = canIncreaseCurrentLevel(props.player, props.forResourceName);
  
   return (
     <div
@@ -55,16 +60,24 @@ export const GenAction = (props: GenActionPropType) => {
         <div className='genactionlevel'>
           <button
             className='genactionlevelbtn btn-small btn-secondary'
+            disabled={!canIncreaseLevel}
             onClick={(e) => {
               e.stopPropagation();
+              if (canIncreaseLevel) {
+                props.increaseLevel();
+              }
             }}
             >&uarr;
           </button>
           <span>Lvl {currentLevel}</span>
           <button
             className='genactionlevelbtn btn-small btn-secondary'
+            disabled={!canDecreaseLevel}
             onClick={(e) => {
               e.stopPropagation();
+              if (canDecreaseLevel) {
+                props.decreaseLevel();
+              }
             }}
           >&darr;
           </button>

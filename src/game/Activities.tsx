@@ -11,6 +11,8 @@ type ActivitiesPropType = {
   player: Player,
   activateGenAction: (fr: ResourceNameNotEnergy) => void
   upgradeGenAction: (fr: ResourceNameNotEnergy) => void
+  decreaseCurrentLevel: (fr: ResourceNameNotEnergy) => void
+  increaseCurrentLevel: (fr: ResourceNameNotEnergy) => void
 }
 
 export const Activities = (props: ActivitiesPropType) => {
@@ -33,6 +35,8 @@ export const Activities = (props: ActivitiesPropType) => {
                     forResourceName={forresnameEnum}
                     activate={() => props.activateGenAction(forresnameEnum)}
                     upgrade={() => props.upgradeGenAction(forresnameEnum)}
+                    decreaseLevel={() => props.decreaseCurrentLevel(forresnameEnum)}
+                    increaseLevel={() => props.increaseCurrentLevel(forresnameEnum)}
                     />
           else
             return null;
