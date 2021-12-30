@@ -1,5 +1,6 @@
 .resourcescontainer {
   grid-area: resources;
+  overflow-y: auto;
   display:flex;
   flex-direction: column;
 }

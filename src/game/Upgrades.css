@@ -1,3 +1,4 @@
 .upgradescontainer {
   grid-area: upgrades;
+  overflow-y: auto;
 }

@@ -1,5 +1,6 @@
 .activitiescontainer {
   grid-area: activities;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
