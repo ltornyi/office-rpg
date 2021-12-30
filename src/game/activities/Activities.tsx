@@ -65,8 +65,8 @@ const ActivitiesSummary = (props: ActivitiesSummaryProptype) => {
 
   return (
     <div className='activitiessummary'>
-      <div className='activitylevel'>{props.hasMagnifier ? 'Lvl:' + props.level : ''}</div>
-      <div className='activityexperience'>{props.hasMagnifier ? 'Exp:' + integerPart(props.totalExp) + '/' + expForNextLevel : ''}</div>
+      <div className='activitylevel'>{props.hasMagnifier ? 'Lvl: ' + props.level : ''}</div>
+      <div className='activityexperience'>{props.hasMagnifier ? 'Exp: ' + integerPart(props.totalExp) + ' / ' + expForNextLevel : ''}</div>
     </div>
   );
 }
