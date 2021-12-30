@@ -1,9 +1,10 @@
 import { canActivateGenAction, canDecreaseCurrentLevel, canIncreaseCurrentLevel, canUpgradeGenAction, genActionCooldownTime, genActionEnergyUsage, genActionExperienceGenerated, genActionNextLevelResourceNeeded, genActionResourceGenerated } from "../utils/activityCalculations";
-import { GeneratorActionDefinitions, ResourceEnumFromString, ResourceName, ResourceNameNotEnergy, SkillDefinitions, SkillName } from "../utils/definitions";
+import { GeneratorActionDefinitions, ResourceEnumFromString, ResourceName, ResourceNameNotEnergy, SkillDefinitions, SkillName, UpgradeDefinitions, UpgradeEnumFromString, UpgradeName } from "../utils/definitions";
 import { generatorActionLevel, playerActivitiesLevel } from "../utils/experience";
 import { clonePlayer, Player, TgeneratorActionMasteryLevel, TgeneratorActionMasteryLevels, Tresource, Tresources } from "../utils/player";
 import { resourceCapacity, resourceRegenRate } from "../utils/resourceCalculations";
 import { CalcCanLevelup, calcLevelingCosts, canLevelUp } from "../utils/skillCalculations";
+import { canAffordUpgrade, upgradeVisible } from "../utils/upgradeCalculations";
 
 const addValueToResource = (res: Tresource, val: number) => {
   res.value = Math.min(res.value + val, resourceCapacity(res));
@@ -36,6 +37,19 @@ const processGenActionsElapsedTime = (generatorActionMasteryLevels: TgeneratorAc
     const resnameEnum = ResourceEnumFromString(resname);
     if (resnameEnum && resnameEnum !== ResourceName.ENERGY) {
       processGenActionElapsedTime(generatorActionMasteryLevels[resnameEnum], elapsedSeconds)
+    }
+  })
+}
+
+const processLockedUpgradesSeen = (player: Player) => {
+  Object.keys(player.upgrades).forEach( upgradename => {
+    const upgradenameEnum = UpgradeEnumFromString(upgradename);
+    if (upgradenameEnum) {
+      if (!player.upgrades[upgradenameEnum].unlocked
+          && !player.upgrades[upgradenameEnum].seen
+          && upgradeVisible(player, upgradenameEnum)) {
+            player.upgrades[upgradenameEnum].seen = true;
+          }
     }
   })
 }
@@ -144,9 +158,25 @@ export const increaseGenActionCurrentLevel = (player: Player, forResourceName: R
 export const generateNewPlayerState = (player: Player, elapsedSeconds: number) => {
   const newPlayer = clonePlayer(player);
 
+  //generates resources based on elapsed time
   processResourcesElapsedTime(newPlayer.resources, elapsedSeconds);
+  //decrease remaining cooldowns
   processGenActionsElapsedTime(newPlayer.generatorActionMasteryLevels, elapsedSeconds);
+  //mark upgrades as seen - so they shown even if the condition to show them later isn't true anymore
+  processLockedUpgradesSeen(newPlayer)
   
   newPlayer.lastUpdateTimeStamp = Date.now();
   return newPlayer;
+}
+
+//called when buying an upgrade
+export const buyUpgrade = (player: Player, upgrade: UpgradeName) => {
+  if (canAffordUpgrade(player, upgrade) && upgradeVisible(player, upgrade)) {
+    const newPlayer = clonePlayer(player);
+    UpgradeDefinitions[upgrade].cost.forEach( cost => substractValueFromResource(newPlayer.resources[cost.resourceName], cost.amount) );
+    newPlayer.upgrades[upgrade].unlocked = true;
+    return newPlayer;
+  } else {
+    return player;
+  }
 }

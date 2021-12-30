@@ -1,3 +1,4 @@
+import { experienceForNextActivitiesLevel } from "./experience";
 import { Player } from "./player";
 
 export enum ResourceName {
@@ -194,4 +195,47 @@ export const GeneratorActionDefinitions = {
   [ResourceName.PRODUCTIVITY]: ProductivityGeneratorActionDefinition,
   [ResourceName.KNOWLEDGE]: KnowledgeGeneratorActionDefinition,
   [ResourceName.INFLUENCE]: InfluenceGeneratorActionDefinition,
+}
+
+export enum UpgradeName {
+  MAGNIFYING_APP = 'Magnifying app',
+  PRACTICING_MIRROR = 'Practicing mirror'
+}
+
+export const UpgradeNameLookup = {
+  'Magnifying app': UpgradeName.MAGNIFYING_APP,
+  'Practicing mirror': UpgradeName.PRACTICING_MIRROR,
+}
+
+export const UpgradeEnumFromString = (str: string) => {
+  if (str in UpgradeNameLookup)
+    return UpgradeNameLookup[str as keyof typeof UpgradeNameLookup]
+  else
+    return null;
+}
+
+type UpgradeDefinitionType = {
+  name: UpgradeName,
+  description: string,
+  cost: {resourceName: ResourceName, amount: number}[],
+  visible: (player: Player) => boolean
+}
+
+const MagnifyingAppUpgradeDefinition: UpgradeDefinitionType = {
+  name: UpgradeName.MAGNIFYING_APP,
+  description: 'It gives you more details',
+  cost: [{resourceName:ResourceName.ENERGY, amount: 120}, {resourceName:ResourceName.KNOWLEDGE, amount: 20}],
+  visible: (player: Player) => player.activitiesTotalExperience >= 0.7 * experienceForNextActivitiesLevel(1)
+}
+
+const PracticingMirrorUpgradeDefinition: UpgradeDefinitionType = {
+  name: UpgradeName.PRACTICING_MIRROR,
+  description: 'Great for improving your card magic. There might be other use cases, too.',
+  cost: [{resourceName:ResourceName.ENERGY, amount: 1000}, {resourceName:ResourceName.KNOWLEDGE, amount: 100}],
+  visible: (player: Player) => player.resources[ResourceName.ENERGY].value >= 700 && player.resources[ResourceName.KNOWLEDGE].value >= 70
+}
+
+export const UpgradeDefinitions = {
+  [UpgradeName.MAGNIFYING_APP]: MagnifyingAppUpgradeDefinition,
+  [UpgradeName.PRACTICING_MIRROR]: PracticingMirrorUpgradeDefinition
 }

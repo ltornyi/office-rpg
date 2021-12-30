@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import './Game.css';
 import { GameHeader } from './GameHeader';
-import { Resources } from './Resources';
-import { Activities } from './Activities';
-import { Skills } from './Skills';
-import { Upgrades } from './Upgrades';
-import { useNavigate } from 'react-router-dom';
+import { Resources } from './resources/Resources';
+import { Activities } from './activities/Activities';
+import { Skills } from './skills/Skills';
+import { Upgrades } from './upgrades/Upgrades';
 import { loadSaveSlot, savePlayerToSlot} from '../utils/saveload';
 import { useAnimationFrame } from './useAnimationFrame';
-import { ResourceNameNotEnergy, SkillName } from '../utils/definitions';
-import { activateGenAction, decreaseGenActionCurrentLevel, generateNewPlayerState, increaseGenActionCurrentLevel, levelUpSkill, upgradeGenAction } from './gamefunctions';
+import { ResourceNameNotEnergy, SkillName, UpgradeName } from '../utils/definitions';
+import { activateGenAction, buyUpgrade, decreaseGenActionCurrentLevel, generateNewPlayerState, increaseGenActionCurrentLevel, levelUpSkill, upgradeGenAction } from './gamefunctions';
 
 export type gamePropsType = {
   selectedSlot: number
@@ -68,6 +69,11 @@ export const Game = (props: gamePropsType) => {
     setPlayer(newPlayer);
   }
 
+  const buyThisUpgrade = (upgradeName: UpgradeName) => {
+    const newPlayer = buyUpgrade(player, upgradeName);
+    setPlayer(newPlayer);
+  }
+
   return (
     <div className='gamecontainer'>
       <GameHeader >
@@ -84,7 +90,7 @@ export const Game = (props: gamePropsType) => {
         increaseCurrentLevel={increaseGenActionLevel}
       />
       <Skills player={player} skillLevelup={skillLevelup}/>
-      <Upgrades />
+      <Upgrades player={player} buy={buyThisUpgrade}/>
     </div>
   )
 }

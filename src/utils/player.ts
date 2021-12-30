@@ -1,4 +1,4 @@
-import { ResourceName, SkillName } from "./definitions"
+import { ResourceName, SkillName, UpgradeName } from "./definitions"
 
 export type TgeneratorActionMasteryLevel = {
   mastery: number,
@@ -43,13 +43,25 @@ type Tskills = {
   [SkillName.SENIORITY]: Tskill,
 }
 
+type Tupgrade = {
+  name: UpgradeName,
+  seen: boolean,
+  unlocked: boolean
+}
+
+export type Tupgrades = {
+  [UpgradeName.MAGNIFYING_APP]: Tupgrade,
+  [UpgradeName.PRACTICING_MIRROR]: Tupgrade
+}
+
 export type Player = {
   lastUpdateTimeStamp: number,
   activitiesLevel: number,
   activitiesTotalExperience: number,
   generatorActionMasteryLevels: TgeneratorActionMasteryLevels,
   resources: Tresources,
-  skills: Tskills
+  skills: Tskills,
+  upgrades: Tupgrades
 }
 
 export const buildNewPlayer = () => {
@@ -73,6 +85,10 @@ export const buildNewPlayer = () => {
       [SkillName.MEMORY]: {name: SkillName.MEMORY, level: 0},
       [SkillName.CHANGE_MANAGEMENT]: {name: SkillName.CHANGE_MANAGEMENT, level: 0},
       [SkillName.SENIORITY]: {name: SkillName.SENIORITY, level: 0},
+    },
+    upgrades: {
+      [UpgradeName.MAGNIFYING_APP]: {name: UpgradeName.MAGNIFYING_APP, seen: false, unlocked: false},
+      [UpgradeName.PRACTICING_MIRROR]: {name: UpgradeName.PRACTICING_MIRROR, seen: false, unlocked: false},
     }
   }
   return val;

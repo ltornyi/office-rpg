@@ -1,9 +1,10 @@
 import React from 'react';
-import { generatorActionVisible, hasVisibleGeneratorAction } from '../utils/activityCalculations';
-import { ResourceEnumFromString, ResourceName, ResourceNameNotEnergy } from '../utils/definitions';
-import { experienceForNextActivitiesLevel } from '../utils/experience';
-import { integerPart } from '../utils/formatters';
-import { Player } from '../utils/player';
+import { generatorActionVisible, hasVisibleGeneratorAction } from '../../utils/activityCalculations';
+import { ResourceEnumFromString, ResourceName, ResourceNameNotEnergy, UpgradeName } from '../../utils/definitions';
+import { experienceForNextActivitiesLevel } from '../../utils/experience';
+import { integerPart } from '../../utils/formatters';
+import { Player } from '../../utils/player';
+import { hasUpgrade } from '../../utils/upgradeCalculations';
 import './Activities.css';
 import { GenAction } from './GenAction';
 
@@ -20,10 +21,16 @@ export const Activities = (props: ActivitiesPropType) => {
     return null;
   }
 
+  const hasMagnifierUpgrade = hasUpgrade(props.player, UpgradeName.MAGNIFYING_APP)
+
   return (
     <div className='gamepanel activitiescontainer'>
       <div className='activitiesheader'>Activities</div>
-      <ActivitiesSummary level={props.player.activitiesLevel} totalExp={props.player.activitiesTotalExperience}/>
+      <ActivitiesSummary
+        level={props.player.activitiesLevel}
+        totalExp={props.player.activitiesTotalExperience}
+        hasMagnifier={hasMagnifierUpgrade}
+      />
       <div className='genactionscontainer'>
         {Object.keys(props.player.generatorActionMasteryLevels).map(forresname => {
           const forresnameEnum = ResourceEnumFromString(forresname);
@@ -37,6 +44,7 @@ export const Activities = (props: ActivitiesPropType) => {
                     upgrade={() => props.upgradeGenAction(forresnameEnum)}
                     decreaseLevel={() => props.decreaseCurrentLevel(forresnameEnum)}
                     increaseLevel={() => props.increaseCurrentLevel(forresnameEnum)}
+                    hasMagnifier={hasMagnifierUpgrade}
                     />
           else
             return null;
@@ -48,7 +56,8 @@ export const Activities = (props: ActivitiesPropType) => {
 
 type ActivitiesSummaryProptype = {
   level: number,
-  totalExp: number
+  totalExp: number,
+  hasMagnifier: boolean
 }
 
 const ActivitiesSummary = (props: ActivitiesSummaryProptype) => {
@@ -56,8 +65,8 @@ const ActivitiesSummary = (props: ActivitiesSummaryProptype) => {
 
   return (
     <div className='activitiessummary'>
-      <div className='activitylevel'>Lvl: {props.level}</div>
-      <div className='activityexperience'>Exp: {integerPart(props.totalExp)} / {expForNextLevel}</div>
+      <div className='activitylevel'>{props.hasMagnifier ? 'Lvl:' + props.level : ''}</div>
+      <div className='activityexperience'>{props.hasMagnifier ? 'Exp:' + integerPart(props.totalExp) + '/' + expForNextLevel : ''}</div>
     </div>
   );
 }

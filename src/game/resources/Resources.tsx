@@ -1,7 +1,7 @@
 import React from 'react';
 import './Resources.css';
-import { ResourceEnumFromString } from '../utils/definitions';
-import { Tresources } from '../utils/player';
+import { ResourceEnumFromString } from '../../utils/definitions';
+import { Tresources } from '../../utils/player';
 import {Resource} from './Resource';
 
 

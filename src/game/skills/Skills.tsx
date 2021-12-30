@@ -1,8 +1,8 @@
 import React from 'react';
 import './Skills.css';
-import { hasVisibleSkill, skillVisible } from '../utils/skillCalculations';
-import { SkillEnumFromString, SkillName } from '../utils/definitions';
-import { Player } from '../utils/player';
+import { hasVisibleSkill, skillVisible } from '../../utils/skillCalculations';
+import { SkillEnumFromString, SkillName } from '../../utils/definitions';
+import { Player } from '../../utils/player';
 import { Skill } from './Skill';
 
 

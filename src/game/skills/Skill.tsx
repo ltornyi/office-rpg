@@ -1,7 +1,7 @@
-import { SkillDefinitions, SkillName } from '../utils/definitions';
-import { oneDecimal } from '../utils/formatters';
-import { Player } from '../utils/player';
-import { CalcCanLevelup, calcLevelingCosts, canLevelUp, SkillCanLevelUpArr, SkillLevelingCosts } from '../utils/skillCalculations';
+import { SkillDefinitions, SkillName } from '../../utils/definitions';
+import { oneDecimal } from '../../utils/formatters';
+import { Player } from '../../utils/player';
+import { CalcCanLevelup, calcLevelingCosts, canLevelUp, SkillCanLevelUpArr, SkillLevelingCosts } from '../../utils/skillCalculations';
 import './Skill.css';
 
 type SkillPropType = {

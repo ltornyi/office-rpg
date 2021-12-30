@@ -1,0 +1,19 @@
+.upgradescontainer {
+  grid-area: upgrades;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.upgradesheader {
+  flex: 0;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.upgradeslist {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
