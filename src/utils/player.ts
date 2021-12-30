@@ -41,6 +41,8 @@ type Tskills = {
   [SkillName.MEMORY]: Tskill,
   [SkillName.CHANGE_MANAGEMENT]: Tskill,
   [SkillName.SENIORITY]: Tskill,
+  [SkillName.CHARISMA]: Tskill,
+  [SkillName.ENTERPRISE_LEADERSHIP]: Tskill,
 }
 
 type Tupgrade = {
@@ -85,6 +87,8 @@ export const buildNewPlayer = () => {
       [SkillName.MEMORY]: {name: SkillName.MEMORY, level: 0},
       [SkillName.CHANGE_MANAGEMENT]: {name: SkillName.CHANGE_MANAGEMENT, level: 0},
       [SkillName.SENIORITY]: {name: SkillName.SENIORITY, level: 0},
+      [SkillName.CHARISMA]: {name: SkillName.CHARISMA, level: 0},
+      [SkillName.ENTERPRISE_LEADERSHIP]: {name: SkillName.ENTERPRISE_LEADERSHIP, level: 0},
     },
     upgrades: {
       [UpgradeName.MAGNIFYING_APP]: {name: UpgradeName.MAGNIFYING_APP, seen: false, unlocked: false},

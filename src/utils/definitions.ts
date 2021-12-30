@@ -28,7 +28,11 @@ export enum SkillName {
   FOCUS = 'Focus',
   MEMORY = 'Memory',
   CHANGE_MANAGEMENT = 'Change Management',
-  SENIORITY = 'Seniority'
+  SENIORITY = 'Seniority',
+  CHARISMA = 'Charisma',
+  ENTERPRISE_LEADERSHIP = 'Enterprise Leadership',
+  // TECH_LEADERSHIP = 'Tech Leadership',
+  // RESILIENCE = 'Resilience'
 }
 
 export const SkillNameLookup = {
@@ -36,11 +40,32 @@ export const SkillNameLookup = {
   'Memory': SkillName.MEMORY,
   'Change Management': SkillName.CHANGE_MANAGEMENT,
   'Seniority': SkillName.SENIORITY,
+  'Charisma': SkillName.CHARISMA,
+  'Enterprise Leadership': SkillName.ENTERPRISE_LEADERSHIP,
+  // 'Tech Leadership': SkillName.TECH_LEADERSHIP,
+  // 'Resilience': SkillName.RESILIENCE
 }
 
 export const SkillEnumFromString = (str: string) => {
   if (str in SkillNameLookup)
     return SkillNameLookup[str as keyof typeof SkillNameLookup]
+  else
+    return null;
+}
+
+export enum UpgradeName {
+  MAGNIFYING_APP = 'Magnifier app',
+  PRACTICING_MIRROR = 'Practicing mirror'
+}
+
+export const UpgradeNameLookup = {
+  'Magnifier app': UpgradeName.MAGNIFYING_APP,
+  'Practicing mirror': UpgradeName.PRACTICING_MIRROR,
+}
+
+export const UpgradeEnumFromString = (str: string) => {
+  if (str in UpgradeNameLookup)
+    return UpgradeNameLookup[str as keyof typeof UpgradeNameLookup]
   else
     return null;
 }
@@ -51,27 +76,27 @@ export type ResourceDefinitionType = {
   regenPerSec: number,
 }
 
-export const EnergyDefinition: ResourceDefinitionType = {
+const EnergyDefinition: ResourceDefinitionType = {
   name: ResourceName.ENERGY,
   baseCapacity: 100,
   regenPerSec: 2
 }
 
-export const ProductivityDefinition: ResourceDefinitionType = {
+const ProductivityDefinition: ResourceDefinitionType = {
   name: ResourceName.PRODUCTIVITY,
   baseCapacity: 10,
   regenPerSec: 0
 }
 
-export const KnowledgeDefinition: ResourceDefinitionType = {
+const KnowledgeDefinition: ResourceDefinitionType = {
   name: ResourceName.KNOWLEDGE,
   baseCapacity: 10,
   regenPerSec: 0
 }
 
-export const InfluenceDefinition: ResourceDefinitionType = {
+const InfluenceDefinition: ResourceDefinitionType = {
   name: ResourceName.INFLUENCE,
-  baseCapacity: 50,
+  baseCapacity: 55,
   regenPerSec: 0
 }
 
@@ -102,7 +127,7 @@ export type SkillDefinitionType = {
   exceptionalVisibility?: (pl: Player) => boolean
 };
 
-export const FocusDefinition: SkillDefinitionType = {
+const FocusDefinition: SkillDefinitionType = {
   name: SkillName.FOCUS,
   resourceUnlock: {resourceName: ResourceName.PRODUCTIVITY, skillLevelNeeded: 2},
   levelingSetup: [{resourceName: ResourceName.ENERGY, initialCost: 50, costMultiplier: 1.25}],
@@ -110,7 +135,7 @@ export const FocusDefinition: SkillDefinitionType = {
   description: '<div>Gain +2 Energy / second</div>'
 };
 
-export const MemoryDefinition: SkillDefinitionType = {
+const MemoryDefinition: SkillDefinitionType = {
   name: SkillName.MEMORY,
   resourceUnlock: {resourceName: ResourceName.KNOWLEDGE, skillLevelNeeded: 1},
   levelingSetup: [{resourceName: ResourceName.PRODUCTIVITY, initialCost: 2, costMultiplier: 1.15}],
@@ -121,7 +146,7 @@ export const MemoryDefinition: SkillDefinitionType = {
   description: '<div>Gain +2 Productivity capacity</div><div>Gain +6 Knowledge capacity</div>'
 };
 
-export const ChangeManagementDefinition: SkillDefinitionType = {
+const ChangeManagementDefinition: SkillDefinitionType = {
   name: SkillName.CHANGE_MANAGEMENT,
   resourceUnlock: {resourceName: ResourceName.INFLUENCE, skillLevelNeeded: 4},
   levelingSetup: [{resourceName: ResourceName.KNOWLEDGE, initialCost: 5, costMultiplier: 1.15}],
@@ -129,7 +154,7 @@ export const ChangeManagementDefinition: SkillDefinitionType = {
   description: '<div>Gain +30 Energy capacity</div>'
 };
 
-export const SeniorityDefinition: SkillDefinitionType = {
+const SeniorityDefinition: SkillDefinitionType = {
   name: SkillName.SENIORITY,
   resourceUnlock: null,
   levelingSetup: [{resourceName: ResourceName.INFLUENCE, initialCost: 10, costMultiplier: 1.15}],
@@ -137,11 +162,31 @@ export const SeniorityDefinition: SkillDefinitionType = {
   description: '<div>Gain +4% Energy capacity</div>'
 };
 
+const CharismaDefinition: SkillDefinitionType = {
+  name: SkillName.CHARISMA,
+  resourceUnlock: null,
+  levelingSetup: [{resourceName: ResourceName.PRODUCTIVITY, initialCost: 8, costMultiplier: 1.15}],
+  levelupImpact: (player: Player) => player.resources[ResourceName.INFLUENCE].baseIncreaseAmount += 12,
+  description: '<div>Gain +12 Influence capacity</div>',
+  exceptionalVisibility: (player: Player) => player.upgrades[UpgradeName.PRACTICING_MIRROR].unlocked
+};
+
+const EnterpriseLeadershipDefinition: SkillDefinitionType = {
+  name: SkillName.ENTERPRISE_LEADERSHIP,
+  resourceUnlock: null,
+  levelingSetup: [{resourceName: ResourceName.KNOWLEDGE, initialCost: 20, costMultiplier: 1.15}],
+  levelupImpact: (player: Player) => player.resources[ResourceName.INFLUENCE].baseIncreasePercent += 5,
+  description: '<div>Gain +5% Influence capacity</div>',
+  exceptionalVisibility: (player: Player) => player.upgrades[UpgradeName.PRACTICING_MIRROR].unlocked
+};
+
 export const SkillDefinitions = {
   [SkillName.FOCUS]: FocusDefinition,
   [SkillName.MEMORY]: MemoryDefinition,
   [SkillName.CHANGE_MANAGEMENT]: ChangeManagementDefinition,
   [SkillName.SENIORITY]: SeniorityDefinition,
+  [SkillName.CHARISMA]: CharismaDefinition,
+  [SkillName.ENTERPRISE_LEADERSHIP]: EnterpriseLeadershipDefinition,
 }
 
 type GeneratorActionDefinition = {
@@ -201,23 +246,6 @@ export const GeneratorActionDefinitions = {
   [ResourceName.PRODUCTIVITY]: ProductivityGeneratorActionDefinition,
   [ResourceName.KNOWLEDGE]: KnowledgeGeneratorActionDefinition,
   [ResourceName.INFLUENCE]: InfluenceGeneratorActionDefinition,
-}
-
-export enum UpgradeName {
-  MAGNIFYING_APP = 'Magnifying app',
-  PRACTICING_MIRROR = 'Practicing mirror'
-}
-
-export const UpgradeNameLookup = {
-  'Magnifying app': UpgradeName.MAGNIFYING_APP,
-  'Practicing mirror': UpgradeName.PRACTICING_MIRROR,
-}
-
-export const UpgradeEnumFromString = (str: string) => {
-  if (str in UpgradeNameLookup)
-    return UpgradeNameLookup[str as keyof typeof UpgradeNameLookup]
-  else
-    return null;
 }
 
 type UpgradeDefinitionType = {

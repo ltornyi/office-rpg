@@ -5,7 +5,11 @@ export const skillVisible = (player: Player, skill: SkillName) => {
   //if the skill is leveled, then it's visible
   if (player.skills[skill].level > 0)
     return true;
-  //if the skill is at level 0, then it's visible if the player has 70% of all resources needed for level 1 of the skill
+  //if the skill has special visibility rules, then only those apply:
+  if (SkillDefinitions[skill].exceptionalVisibility) {
+    return SkillDefinitions[skill].exceptionalVisibility!(player) //my typescript compiler needs the !
+  }
+  //otherwise if the skill is at level 0, then it's visible if the player has 70% of all resources needed for level 1 of the skill
   const levelingSetup = SkillDefinitions[skill].levelingSetup;
   let hasEnough = true;
   for (const lvlSetup of levelingSetup) {
