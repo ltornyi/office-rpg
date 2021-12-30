@@ -127,7 +127,7 @@ export const SeniorityDefinition: SkillDefinitionType = {
   resourceUnlock: null,
   levelingSetup: [{resourceName: ResourceName.INFLUENCE, initialCost: 10, costMultiplier: 1.15}],
   levelupImpact: (player: Player) => player.resources[ResourceName.ENERGY].baseIncreasePercent += 4,
-  description: '<div>Gain +4% Energy / second</div>'
+  description: '<div>Gain +4% Energy capacity</div>'
 };
 
 export const SkillDefinitions = {
