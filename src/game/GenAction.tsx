@@ -1,4 +1,5 @@
-import { activateGenAction, canActivateGenAction, canLevelGenAction, genActionEnergyUsage, genActionLevelupResourceName, genActionName, genActionNextLevelResourceNeeded, genActionResourceGenerated, hasEnoughEnergyToActivateGenAction, levelUpGenAction } from '../utils/activityCalculations'
+import { canActivateGenAction, canLevelGenAction, genActionEnergyUsage, genActionLevelupResourceName, genActionName, genActionNextLevelResourceNeeded,
+  genActionResourceGenerated, hasEnoughEnergyToActivateGenAction } from '../utils/activityCalculations'
 import { ResourceNameNotEnergy } from '../utils/definitions'
 import { experienceForNextMasteryLevel } from '../utils/experience'
 import { integerPart, oneDecimal } from '../utils/formatters'
@@ -7,11 +8,13 @@ import './GenAction.css'
 
 type GenActionPropType = {
   player: Player,
-  forResourceName: ResourceNameNotEnergy
+  forResourceName: ResourceNameNotEnergy,
+  activate: () => void,
+  upgrade: () => void
 }
 
 export const GenAction = (props: GenActionPropType) => {
-  const canActivateClass = canActivateGenAction(props.player, props.forResourceName) ? 'clickable' : '';
+  const canActivate = canActivateGenAction(props.player, props.forResourceName);
   const genActionMastery = props.player.generatorActionMasteryLevels[props.forResourceName];
   let cooldownLeftTxt = '';
   if (genActionMastery.cooldownLeft > 0.01) {
@@ -32,31 +35,63 @@ export const GenAction = (props: GenActionPropType) => {
   const nextMasteryExp = experienceForNextMasteryLevel(mastery);
 
   const levelupResNameCostTxt = genActionLevelupResourceName(props.forResourceName) + ': ' + genActionNextLevelResourceNeeded(props.forResourceName, level)
-
-  const tooltipTxt = '+' + integerPart(genActionResourceGenerated(props.player, props.forResourceName)) + ' ' + props.forResourceName;
+  const canUpgrade = canLevelGenAction(props.player, props.forResourceName);
  
   return (
-    <div className={'genactionrow forthis ' + canActivateClass} onClick={() => activateGenAction(props.player, props.forResourceName)}>
+    <div
+      className={'genactionrow forthis ' + (canActivate ? 'clickable' : '')}
+      onClick={() => {
+        if (canActivate){
+          props.activate()
+        } 
+      }}
+    >
       <div className='genactioncdn'>{cooldownLeftTxt}</div>
       <div className='genactiontextcontainer'>
         <div className='genactiontext'>{name}</div>
         <div className={'genactioncost ' + hasEnoughEnergyClass}>{'E : ' + oneDecimal(energyUsed)}</div>
       </div>
       <div className='genactionmasterycontainer'>
-        <div className='genactionmastery'>Mastery: {mastery}, Exp: {oneDecimal(currentExp)} / {nextMasteryExp}</div>
         <div className='genactionlevel'>
-          <span>Level: {level}</span>
           <button
-            className='genactionlevelbtn'
-            disabled={!canLevelGenAction(props.player, props.forResourceName)}
+            className='genactionlevelbtn btn-small btn-secondary'
             onClick={(e) => {
-              levelUpGenAction(props.player, props.forResourceName);
               e.stopPropagation();
             }}
-          >{levelupResNameCostTxt}</button>
+            >&uarr;
+          </button>
+          <span>Lvl {level}</span>
+          <button
+            className='genactionlevelbtn btn-small btn-secondary'
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >&darr;
+          </button>
         </div>
       </div>
-      <div className='showthat'>{tooltipTxt}</div>
+      <div className='genactionupgrade'>
+        <button
+          className='genactionlevelbtn btn btn-primary'
+          disabled={!canUpgrade}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (canUpgrade) {
+              props.upgrade();
+            }
+          }}
+        >Upgr.
+        </button>
+      </div>
+      <div className='showthat'>
+        <div>{'Gain +' + integerPart(genActionResourceGenerated(props.player, props.forResourceName)) + ' ' + props.forResourceName}</div>
+        <div className='separator'></div>
+        <div>Mastery: {mastery}</div>
+        <div>Exp: {oneDecimal(currentExp)} / {nextMasteryExp}</div>
+        <div className='separator'></div>
+        <div>Upgrade</div>
+        <div>{levelupResNameCostTxt}</div>
+      </div>
     </div>
   )
 }

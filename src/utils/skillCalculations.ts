@@ -1,6 +1,5 @@
 import { ResourceName, SkillDefinitions, SkillEnumFromString, SkillName } from "./definitions";
 import { Player } from "./player";
-import { substractValueFromResource } from "./resourceCalculations";
 
 export const skillVisible = (player: Player, skill: SkillName) => {
   //if the skill is leveled, then it's visible
@@ -71,20 +70,4 @@ export const canLevelUp = (canArr: SkillCanLevelUpArr) => {
     }
   }
   return canLevel;
-}
-
-export const levelUpSkill = (player: Player, skillName: SkillName) => {
-  const skill = player.skills[skillName];
-  const levelingCosts = calcLevelingCosts(skillName, skill.level);
-  const canLevelArr = CalcCanLevelup(player, levelingCosts);
-  const canLevel = canLevelUp(canLevelArr);
-  if (canLevel) {
-    levelingCosts.forEach( lvlCost => substractValueFromResource(player.resources[lvlCost.resourceName], lvlCost.cost) );
-    player.skills[skillName].level++;
-    const resourceUnlock = SkillDefinitions[skillName].resourceUnlock
-    if (resourceUnlock && resourceUnlock.skillLevelNeeded <= player.skills[skillName].level) {
-      player.resources[resourceUnlock.resourceName].unlocked = true;
-    }
-    SkillDefinitions[skillName].levelupImpact(player);
-  }
 }

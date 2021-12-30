@@ -7,8 +7,9 @@ import { Skills } from './Skills';
 import { Upgrades } from './Upgrades';
 import { useNavigate } from 'react-router-dom';
 import { loadSaveSlot, savePlayerToSlot} from '../utils/saveload';
-import { generateNewPlayerState } from '../utils/player';
 import { useAnimationFrame } from './useAnimationFrame';
+import { ResourceNameNotEnergy, SkillName } from '../utils/definitions';
+import { activateGenAction, generateNewPlayerState, levelUpSkill, upgradeGenAction } from './gamefunctions';
 
 export type gamePropsType = {
   selectedSlot: number
@@ -42,6 +43,21 @@ export const Game = (props: gamePropsType) => {
     }
   }, [currentTimestamp, player, lastAutosaveAt, props.selectedSlot]);
 
+  const skillLevelup = (sk: SkillName) => {
+    const newPlayer = levelUpSkill(player, sk);
+    setPlayer(newPlayer);
+  }
+
+  const activateThisGenAction = (forResName: ResourceNameNotEnergy) => {
+    const newPlayer = activateGenAction(player, forResName);
+    setPlayer(newPlayer);
+  }
+
+  const upgradeThisGenAction = (forResName: ResourceNameNotEnergy) => {
+    const newPlayer = upgradeGenAction(player, forResName);
+    setPlayer(newPlayer);
+  }
+
   return (
     <div className='gamecontainer'>
       <GameHeader >
@@ -50,8 +66,12 @@ export const Game = (props: gamePropsType) => {
         <button onClick={() => navigate('/')}>Goto main menu</button>
       </GameHeader>
       <Resources resources={player.resources}/>
-      <Activities player={player} />
-      <Skills player={player}/>
+      <Activities
+        player={player}
+        activateGenAction={activateThisGenAction}
+        upgradeGenAction={upgradeThisGenAction}
+      />
+      <Skills player={player} skillLevelup={skillLevelup}/>
       <Upgrades />
     </div>
   )

@@ -1,6 +1,5 @@
 import { GeneratorActionDefinitions, ResourceEnumFromString, ResourceName, ResourceNameNotEnergy } from "./definitions"
-import { gainGeneratorActionExperience, Player, TgeneratorActionMasteryLevel, TgeneratorActionMasteryLevels } from "./player"
-import { addValueToResource, substractValueFromResource } from "./resourceCalculations"
+import { Player } from "./player"
 
 export const generatorActionVisible = (player: Player, forResourceName: ResourceNameNotEnergy) => {
   return player.resources[forResourceName].unlocked
@@ -45,15 +44,6 @@ export const hasEnoughResourceToLevelGenAction = (player: Player, forResourceNam
 
 export const canLevelGenAction = (player: Player, forResourceName: ResourceNameNotEnergy) => {
   return hasEnoughMasteryToLevelGenAction(player, forResourceName) && hasEnoughResourceToLevelGenAction(player, forResourceName);
-}
-
-export const levelUpGenAction = (player: Player, forResourceName: ResourceNameNotEnergy) => {
-  if (canLevelGenAction(player, forResourceName)) {
-    const resName = GeneratorActionDefinitions[forResourceName].levelUpResourceName;
-    const currentLevel = player.generatorActionMasteryLevels[forResourceName].level;
-    substractValueFromResource(player.resources[resName], genActionNextLevelResourceNeeded(forResourceName, currentLevel))
-    player.generatorActionMasteryLevels[forResourceName].level++;
-  }
 }
 
 export const genActionCooldownTime = (player: Player, forResourceName: ResourceNameNotEnergy) => {
@@ -101,37 +91,4 @@ export const hasEnoughEnergyToActivateGenAction = (player: Player, forResourceNa
 
 export const canActivateGenAction = (player: Player, forResourceName: ResourceNameNotEnergy) => {
   return (!isGenActionOnCooldown(player, forResourceName) && hasEnoughEnergyToActivateGenAction(player, forResourceName))
-}
-
-export const activateGenAction = (player: Player, forResourceName: ResourceNameNotEnergy) => {
-  if (canActivateGenAction(player, forResourceName)) {
-    //goes on cooldown
-    player.generatorActionMasteryLevels[forResourceName].cooldownLeft = genActionCooldownTime(player, forResourceName);
-    
-    //consumes energy
-    const level = player.generatorActionMasteryLevels[forResourceName].level;
-    const energyUsage = genActionEnergyUsage(forResourceName, level);
-    substractValueFromResource(player.resources[ResourceName.ENERGY], energyUsage);
-
-    //generates resource
-    const resourceGenerated = genActionResourceGenerated(player, forResourceName);
-    addValueToResource(player.resources[forResourceName], resourceGenerated);
-
-    //gives experience
-    const experienceGenerated = genActionExperienceGenerated(player, forResourceName);
-    gainGeneratorActionExperience(player, forResourceName, experienceGenerated);
-  }
-}
-
-const processGenActionElapsedTime = (generatorActionMasteryLevel: TgeneratorActionMasteryLevel, elapsedSeconds: number) => {
-  generatorActionMasteryLevel.cooldownLeft = Math.max(generatorActionMasteryLevel.cooldownLeft - elapsedSeconds, 0);
-}
-
-export const processGenActionsElapsedTime = (generatorActionMasteryLevels: TgeneratorActionMasteryLevels, elapsedSeconds: number) => {
-  Object.keys(generatorActionMasteryLevels).forEach( resname => {
-    const resnameEnum = ResourceEnumFromString(resname);
-    if (resnameEnum && resnameEnum !== ResourceName.ENERGY) {
-      processGenActionElapsedTime(generatorActionMasteryLevels[resnameEnum], elapsedSeconds)
-    }
-  })
 }

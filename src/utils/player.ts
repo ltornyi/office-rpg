@@ -1,7 +1,4 @@
-import { processGenActionsElapsedTime } from "./activityCalculations"
-import { ResourceName, ResourceNameNotEnergy, SkillName } from "./definitions"
-import { generatorActionLevel, playerActivitiesLevel } from "./experience"
-import { processResourcesElapsedTime } from "./resourceCalculations"
+import { ResourceName, SkillName } from "./definitions"
 
 export type TgeneratorActionMasteryLevel = {
   mastery: number,
@@ -80,24 +77,4 @@ export const buildNewPlayer = () => {
   return val;
 }
 
-export const generateNewPlayerState = (player: Player, elapsedSeconds: number) => {
-  const newPlayer = JSON.parse(JSON.stringify(player)) as Player;
-
-  processResourcesElapsedTime(newPlayer.resources, elapsedSeconds);
-  processGenActionsElapsedTime(newPlayer.generatorActionMasteryLevels, elapsedSeconds);
-  
-  newPlayer.lastUpdateTimeStamp = Date.now();
-  return newPlayer;
-}
-
-export const gainActivitiesExperience = (player: Player, experience: number) => {
-  player.activitiesTotalExperience += experience;
-  player.activitiesLevel = playerActivitiesLevel(player.activitiesTotalExperience);
-}
-
-export const gainGeneratorActionExperience = (player: Player, forResourceName: ResourceNameNotEnergy, experience: number) => {
-  const curr = player.generatorActionMasteryLevels[forResourceName];
-  curr.experience += experience;
-  curr.mastery = generatorActionLevel(curr.experience);
-  gainActivitiesExperience(player, experience);
-}
+export const clonePlayer = (player: Player) => JSON.parse(JSON.stringify(player)) as Player;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { generatorActionVisible, hasVisibleGeneratorAction } from '../utils/activityCalculations';
-import { ResourceEnumFromString, ResourceName } from '../utils/definitions';
+import { ResourceEnumFromString, ResourceName, ResourceNameNotEnergy } from '../utils/definitions';
 import { experienceForNextActivitiesLevel } from '../utils/experience';
 import { integerPart } from '../utils/formatters';
 import { Player } from '../utils/player';
@@ -8,7 +8,9 @@ import './Activities.css';
 import { GenAction } from './GenAction';
 
 type ActivitiesPropType = {
-  player: Player
+  player: Player,
+  activateGenAction: (fr: ResourceNameNotEnergy) => void
+  upgradeGenAction: (fr: ResourceNameNotEnergy) => void
 }
 
 export const Activities = (props: ActivitiesPropType) => {
@@ -29,6 +31,8 @@ export const Activities = (props: ActivitiesPropType) => {
                     key={forresname}
                     player={props.player}
                     forResourceName={forresnameEnum}
+                    activate={() => props.activateGenAction(forresnameEnum)}
+                    upgrade={() => props.upgradeGenAction(forresnameEnum)}
                     />
           else
             return null;

@@ -1,13 +1,14 @@
 import React from 'react';
 import './Skills.css';
 import { hasVisibleSkill, skillVisible } from '../utils/skillCalculations';
-import { SkillEnumFromString } from '../utils/definitions';
+import { SkillEnumFromString, SkillName } from '../utils/definitions';
 import { Player } from '../utils/player';
 import { Skill } from './Skill';
 
 
 type SkillsPropType = {
-  player: Player
+  player: Player,
+  skillLevelup: (sk: SkillName) => void
 }
 
 export const Skills = (props: SkillsPropType) => {
@@ -21,7 +22,7 @@ export const Skills = (props: SkillsPropType) => {
       {Object.keys(props.player.skills).map(skillname => {
         const skillnameEnum = SkillEnumFromString(skillname);
         if (skillnameEnum && skillVisible(props.player, skillnameEnum))
-          return <Skill key={skillname} player={props.player} skillName={skillnameEnum}/>
+          return <Skill key={skillname} player={props.player} skillName={skillnameEnum} skillLevelup={() => props.skillLevelup(skillnameEnum)}/>
         else
           return null;
       })}

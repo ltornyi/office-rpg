@@ -1,12 +1,13 @@
 import { SkillDefinitions, SkillName } from '../utils/definitions';
 import { oneDecimal } from '../utils/formatters';
 import { Player } from '../utils/player';
-import { CalcCanLevelup, calcLevelingCosts, canLevelUp, levelUpSkill, SkillCanLevelUpArr, SkillLevelingCosts } from '../utils/skillCalculations';
+import { CalcCanLevelup, calcLevelingCosts, canLevelUp, SkillCanLevelUpArr, SkillLevelingCosts } from '../utils/skillCalculations';
 import './Skill.css';
 
 type SkillPropType = {
   player: Player,
-  skillName: SkillName
+  skillName: SkillName,
+  skillLevelup: () => void
 }
 
 export const Skill = (props: SkillPropType) => {
@@ -18,7 +19,7 @@ export const Skill = (props: SkillPropType) => {
   return (
     <div
       className={'skillrow forthis ' + (canLevel ? 'clickable' : '')}
-      onClick={() => levelUpSkill(props.player, props.skillName)}
+      onClick={() => {if (canLevel) props.skillLevelup()}}
     >
       <div className='skilllevel'>{skill.level}</div>
       <div className='skilltextcontainer'>
