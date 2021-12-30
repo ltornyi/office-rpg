@@ -93,8 +93,14 @@ type SkillLevelingSetup = {
   costMultiplier: number
 }
 
-export type SkillDefinitionType =
- {name: SkillName, levelupImpact: Function, description: string } & {resourceUnlock: SkillResourceUnlockType | null} & {levelingSetup: SkillLevelingSetup[]};
+export type SkillDefinitionType = {
+  name: SkillName,
+  levelupImpact: Function,
+  description: string,
+  resourceUnlock: SkillResourceUnlockType | null,
+  levelingSetup: SkillLevelingSetup[],
+  exceptionalVisibility?: (pl: Player) => boolean
+};
 
 export const FocusDefinition: SkillDefinitionType = {
   name: SkillName.FOCUS,
