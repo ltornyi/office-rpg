@@ -1,4 +1,4 @@
-import { canActivateGenAction, canLevelGenAction, genActionEnergyUsage, genActionLevelupResourceName, genActionName, genActionNextLevelResourceNeeded,
+import { canActivateGenAction, canUpgradeGenAction, genActionEnergyUsage, genActionLevelupResourceName, genActionName, genActionNextLevelResourceNeeded,
   genActionResourceGenerated, hasEnoughEnergyToActivateGenAction } from '../utils/activityCalculations'
 import { ResourceNameNotEnergy } from '../utils/definitions'
 import { experienceForNextMasteryLevel } from '../utils/experience'
@@ -25,17 +25,17 @@ export const GenAction = (props: GenActionPropType) => {
     }
   }
 
-  const level = genActionMastery.level;
-  const name = genActionName(props.forResourceName, level)
-  const energyUsed = genActionEnergyUsage(props.forResourceName, level);
+  const currentLevel = genActionMastery.currentLevel;
+  const name = genActionName(props.forResourceName, currentLevel)
+  const energyUsed = genActionEnergyUsage(props.forResourceName, currentLevel);
   const hasEnoughEnergyClass = hasEnoughEnergyToActivateGenAction(props.player, props.forResourceName) ? '' : 'notenoughresource';
 
   const mastery = genActionMastery.mastery;
   const currentExp = genActionMastery.experience;
   const nextMasteryExp = experienceForNextMasteryLevel(mastery);
 
-  const levelupResNameCostTxt = genActionLevelupResourceName(props.forResourceName) + ': ' + genActionNextLevelResourceNeeded(props.forResourceName, level)
-  const canUpgrade = canLevelGenAction(props.player, props.forResourceName);
+  const levelupResNameCostTxt = genActionLevelupResourceName(props.forResourceName) + ': ' + genActionNextLevelResourceNeeded(props.forResourceName, genActionMastery.maxLevel)
+  const canUpgrade = canUpgradeGenAction(props.player, props.forResourceName);
  
   return (
     <div
@@ -60,7 +60,7 @@ export const GenAction = (props: GenActionPropType) => {
             }}
             >&uarr;
           </button>
-          <span>Lvl {level}</span>
+          <span>Lvl {currentLevel}</span>
           <button
             className='genactionlevelbtn btn-small btn-secondary'
             onClick={(e) => {
@@ -84,7 +84,7 @@ export const GenAction = (props: GenActionPropType) => {
         </button>
       </div>
       <div className='showthat'>
-        <div>{'Gain +' + integerPart(genActionResourceGenerated(props.player, props.forResourceName)) + ' ' + props.forResourceName}</div>
+        <div>{'Gain +' + oneDecimal(genActionResourceGenerated(props.player, props.forResourceName)) + ' ' + props.forResourceName}</div>
         <div className='separator'></div>
         <div>Mastery: {mastery}</div>
         <div>Exp: {oneDecimal(currentExp)} / {nextMasteryExp}</div>

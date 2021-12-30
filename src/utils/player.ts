@@ -2,7 +2,8 @@ import { ResourceName, SkillName } from "./definitions"
 
 export type TgeneratorActionMasteryLevel = {
   mastery: number,
-  level: number,
+  currentLevel: number,
+  maxLevel: number,
   experience: number,
   cooldownLeft: number
 }
@@ -57,9 +58,9 @@ export const buildNewPlayer = () => {
     activitiesLevel: 1,
     activitiesTotalExperience: 0,
     generatorActionMasteryLevels: {
-      [ResourceName.PRODUCTIVITY]: {mastery: 1, level: 1, experience: 0, cooldownLeft: 0},
-      [ResourceName.KNOWLEDGE]: {mastery: 1, level: 1, experience: 0, cooldownLeft: 0},
-      [ResourceName.INFLUENCE]: {mastery: 1, level: 1, experience: 0, cooldownLeft: 0},
+      [ResourceName.PRODUCTIVITY]: {mastery: 1, currentLevel: 1, maxLevel: 1, experience: 0, cooldownLeft: 0},
+      [ResourceName.KNOWLEDGE]: {mastery: 1, currentLevel: 1, maxLevel: 1, experience: 0, cooldownLeft: 0},
+      [ResourceName.INFLUENCE]: {mastery: 1, currentLevel: 1, maxLevel: 1, experience: 0, cooldownLeft: 0},
     },
     resources: {
       [ResourceName.ENERGY]: {name: ResourceName.ENERGY, baseIncreaseAmount: 0, baseIncreasePercent: 0, regenIncreaseAmount: 0, regenIncreasePercent: 0, unlocked: true, value:0},

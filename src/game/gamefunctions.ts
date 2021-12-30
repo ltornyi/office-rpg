@@ -1,4 +1,4 @@
-import { canActivateGenAction, canLevelGenAction, genActionCooldownTime, genActionEnergyUsage, genActionExperienceGenerated, genActionNextLevelResourceNeeded, genActionResourceGenerated } from "../utils/activityCalculations";
+import { canActivateGenAction, canUpgradeGenAction, genActionCooldownTime, genActionEnergyUsage, genActionExperienceGenerated, genActionNextLevelResourceNeeded, genActionResourceGenerated } from "../utils/activityCalculations";
 import { GeneratorActionDefinitions, ResourceEnumFromString, ResourceName, ResourceNameNotEnergy, SkillDefinitions, SkillName } from "../utils/definitions";
 import { generatorActionLevel, playerActivitiesLevel } from "../utils/experience";
 import { clonePlayer, Player, TgeneratorActionMasteryLevel, TgeneratorActionMasteryLevels, Tresource, Tresources } from "../utils/player";
@@ -63,12 +63,17 @@ export const levelUpSkill = (player: Player, skillName: SkillName) => {
 
 //called when a generator action is upgraded
 export const upgradeGenAction = (player: Player, forResourceName: ResourceNameNotEnergy) => {
-  if (canLevelGenAction(player, forResourceName)) {
+  if (canUpgradeGenAction(player, forResourceName)) {
     const newPlayer = clonePlayer(player);
     const resName = GeneratorActionDefinitions[forResourceName].levelUpResourceName;
-    const currentLevel = newPlayer.generatorActionMasteryLevels[forResourceName].level;
-    substractValueFromResource(newPlayer.resources[resName], genActionNextLevelResourceNeeded(forResourceName, currentLevel))
-    newPlayer.generatorActionMasteryLevels[forResourceName].level++;
+    const currentMaxLevel = newPlayer.generatorActionMasteryLevels[forResourceName].maxLevel;
+    const currentLevel = newPlayer.generatorActionMasteryLevels[forResourceName].currentLevel;
+    substractValueFromResource(newPlayer.resources[resName], genActionNextLevelResourceNeeded(forResourceName, currentMaxLevel))
+    newPlayer.generatorActionMasteryLevels[forResourceName].maxLevel++;
+    //convenience: if upgrading while sitting at the maximum level, then the currentLevel is also set to the new maximum:
+    if (currentLevel === currentMaxLevel) {
+      newPlayer.generatorActionMasteryLevels[forResourceName].currentLevel = newPlayer.generatorActionMasteryLevels[forResourceName].maxLevel
+    }
     return newPlayer;
   } else {
     return player;
@@ -95,8 +100,8 @@ export const activateGenAction = (player: Player, forResourceName: ResourceNameN
     newPlayer.generatorActionMasteryLevels[forResourceName].cooldownLeft = genActionCooldownTime(newPlayer, forResourceName);
     
     //consumes energy
-    const level = newPlayer.generatorActionMasteryLevels[forResourceName].level;
-    const energyUsage = genActionEnergyUsage(forResourceName, level);
+    const currentLevel = newPlayer.generatorActionMasteryLevels[forResourceName].currentLevel;
+    const energyUsage = genActionEnergyUsage(forResourceName, currentLevel);
     substractValueFromResource(newPlayer.resources[ResourceName.ENERGY], energyUsage);
 
     //generates resource

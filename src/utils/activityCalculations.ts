@@ -32,24 +32,24 @@ export const genActionLevelupResourceName = (forResourceName: ResourceNameNotEne
   return GeneratorActionDefinitions[forResourceName].levelUpResourceName
 }
 
-export const hasEnoughMasteryToLevelGenAction = (player: Player, forResourceName: ResourceNameNotEnergy) => {
-  return player.generatorActionMasteryLevels[forResourceName].mastery >= player.generatorActionMasteryLevels[forResourceName].level + 1;
+export const hasEnoughMasteryToUpgradeGenAction = (player: Player, forResourceName: ResourceNameNotEnergy) => {
+  return player.generatorActionMasteryLevels[forResourceName].mastery >= player.generatorActionMasteryLevels[forResourceName].maxLevel + 1;
 }
 
-export const hasEnoughResourceToLevelGenAction = (player: Player, forResourceName: ResourceNameNotEnergy) => {
+export const hasEnoughResourceToUpgradeGenAction = (player: Player, forResourceName: ResourceNameNotEnergy) => {
   const resName = GeneratorActionDefinitions[forResourceName].levelUpResourceName;
-  const currLevel = player.generatorActionMasteryLevels[forResourceName].level;
-  return player.resources[resName].value >= genActionNextLevelResourceNeeded(forResourceName, currLevel);
+  const currMaxLevel = player.generatorActionMasteryLevels[forResourceName].maxLevel;
+  return player.resources[resName].value >= genActionNextLevelResourceNeeded(forResourceName, currMaxLevel);
 }
 
-export const canLevelGenAction = (player: Player, forResourceName: ResourceNameNotEnergy) => {
-  return hasEnoughMasteryToLevelGenAction(player, forResourceName) && hasEnoughResourceToLevelGenAction(player, forResourceName);
+export const canUpgradeGenAction = (player: Player, forResourceName: ResourceNameNotEnergy) => {
+  return hasEnoughMasteryToUpgradeGenAction(player, forResourceName) && hasEnoughResourceToUpgradeGenAction(player, forResourceName);
 }
 
 export const genActionCooldownTime = (player: Player, forResourceName: ResourceNameNotEnergy) => {
   const baseCooldown = GeneratorActionDefinitions[forResourceName].cooldownTime;
   const playerActivitiesLevel = player.activitiesLevel - 1;
-  const genActionLevel = player.generatorActionMasteryLevels[forResourceName].level - 1;
+  const genActionLevel = player.generatorActionMasteryLevels[forResourceName].currentLevel - 1;
   //+25% for each action level (multiplicative)
   //-1% for each global activities level (additive)
   return baseCooldown * (1 - 0.01 * playerActivitiesLevel) * Math.pow(1.25, genActionLevel);
@@ -63,7 +63,7 @@ export const genActionEnergyUsage = (forResourceName: ResourceNameNotEnergy, cur
 export const genActionResourceGenerated = (player: Player, forResourceName: ResourceNameNotEnergy) => {
   const baseAmount = GeneratorActionDefinitions[forResourceName].resourceGenerated;
   const playerActivitiesLevel = player.activitiesLevel - 1;
-  const genActionLevel = player.generatorActionMasteryLevels[forResourceName].level - 1;
+  const genActionLevel = player.generatorActionMasteryLevels[forResourceName].currentLevel - 1;
   const genActionMastery = player.generatorActionMasteryLevels[forResourceName].mastery - 1;
   //+75% for each action level (multiplicative)
   //+4% for each global activities level (additive)
@@ -74,7 +74,7 @@ export const genActionResourceGenerated = (player: Player, forResourceName: Reso
 export const genActionExperienceGenerated = (player: Player, forResourceName: ResourceNameNotEnergy) => {
   const baseExp = GeneratorActionDefinitions[forResourceName].baseExperience;
   const playerActivitiesLevel = player.activitiesLevel - 1;
-  const level = player.generatorActionMasteryLevels[forResourceName].level - 1;
+  const level = player.generatorActionMasteryLevels[forResourceName].currentLevel - 1;
   //+20% for each action level (multiplicative)
   //+1% for each global activities level (additive)
   return baseExp * Math.pow(1.2, level) * (1.0 + 0.01 * playerActivitiesLevel);
@@ -85,7 +85,7 @@ export const isGenActionOnCooldown = (player: Player, forResourceName: ResourceN
 }
 
 export const hasEnoughEnergyToActivateGenAction = (player: Player, forResourceName: ResourceNameNotEnergy) => {
-  const level = player.generatorActionMasteryLevels[forResourceName].level;
+  const level = player.generatorActionMasteryLevels[forResourceName].currentLevel;
   return player.resources[ResourceName.ENERGY].value >= genActionEnergyUsage(forResourceName, level)
 }
 
