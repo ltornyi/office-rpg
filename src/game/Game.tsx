@@ -81,7 +81,7 @@ export const Game = (props: gamePropsType) => {
         <button onClick={() => savePlayerToSlot(player, props.selectedSlot)}>Save</button>
         <button onClick={() => navigate('/')}>Goto main menu</button>
       </GameHeader>
-      <Resources resources={player.resources}/>
+      <Resources player={player}/>
       <Activities
         player={player}
         activateGenAction={activateThisGenAction}

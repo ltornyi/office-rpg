@@ -1,10 +1,14 @@
-import { ResourceDefinitions } from "./definitions";
-import { Tresource } from "./player";
+import { ResourceDefinitions, ResourceName, UpgradeName } from "./definitions";
+import { Player, Tresource } from "./player";
 
 
-export const resourceCapacity = (res: Tresource): number => {
+export const resourceCapacity = (res: Tresource, player: Player): number => {
   const resourceBaseCapacity = ResourceDefinitions[res.name].baseCapacity;
-  return (resourceBaseCapacity + res.baseIncreaseAmount) * (1 + res.baseIncreasePercent / 100.0)
+  let specMultiplier = 1;
+  if (res.name === ResourceName.PRODUCTIVITY && player.upgrades[UpgradeName.SWITCH_TO_MAC].unlocked) {
+    specMultiplier = 2;
+  }
+  return (resourceBaseCapacity + res.baseIncreaseAmount) * (1 + res.baseIncreasePercent / 100.0) * specMultiplier;
 }
 
 export const resourceRegenRate = (res: Tresource): number => {

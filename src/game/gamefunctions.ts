@@ -6,24 +6,24 @@ import { resourceCapacity, resourceRegenRate } from "../utils/resourceCalculatio
 import { CalcCanLevelup, calcLevelingCosts, canLevelUp } from "../utils/skillCalculations";
 import { canAffordUpgrade, upgradeVisible } from "../utils/upgradeCalculations";
 
-const addValueToResource = (res: Tresource, val: number) => {
-  res.value = Math.min(res.value + val, resourceCapacity(res));
+const addValueToResource = (res: Tresource, val: number, player: Player) => {
+  res.value = Math.min(res.value + val, resourceCapacity(res, player));
 }
 
 const substractValueFromResource = (res: Tresource, val: number) => {
   res.value = Math.max(res.value - val, 0);
 }
 
-const processResourceElapsedTime = (res: Tresource, elapsedSeconds: number) => {
+const processResourceElapsedTime = (res: Tresource, elapsedSeconds: number, player: Player) => {
   const gainedAmount = resourceRegenRate(res) * elapsedSeconds;
-  addValueToResource(res, gainedAmount)
+  addValueToResource(res, gainedAmount, player)
 }
 
-const processResourcesElapsedTime = (resources: Tresources, elapsedSeconds: number) => {
+const processResourcesElapsedTime = (resources: Tresources, elapsedSeconds: number, player: Player) => {
   Object.keys(resources).forEach( resname => {
     const resnameEnum = ResourceEnumFromString(resname);
     if (resnameEnum) {
-      processResourceElapsedTime(resources[resnameEnum], elapsedSeconds)
+      processResourceElapsedTime(resources[resnameEnum], elapsedSeconds, player)
     }
   })
 }
@@ -120,7 +120,7 @@ export const activateGenAction = (player: Player, forResourceName: ResourceNameN
 
     //generates resource
     const resourceGenerated = genActionResourceGenerated(newPlayer, forResourceName);
-    addValueToResource(newPlayer.resources[forResourceName], resourceGenerated);
+    addValueToResource(newPlayer.resources[forResourceName], resourceGenerated, player);
 
     //gives experience
     const experienceGenerated = genActionExperienceGenerated(newPlayer, forResourceName);
@@ -159,7 +159,7 @@ export const generateNewPlayerState = (player: Player, elapsedSeconds: number) =
   const newPlayer = clonePlayer(player);
 
   //generates resources based on elapsed time
-  processResourcesElapsedTime(newPlayer.resources, elapsedSeconds);
+  processResourcesElapsedTime(newPlayer.resources, elapsedSeconds, newPlayer);
   //decrease remaining cooldowns
   processGenActionsElapsedTime(newPlayer.generatorActionMasteryLevels, elapsedSeconds);
   //mark upgrades as seen - so they shown even if the condition to show them later isn't true anymore

@@ -31,8 +31,8 @@ export enum SkillName {
   SENIORITY = 'Seniority',
   CHARISMA = 'Charisma',
   ENTERPRISE_LEADERSHIP = 'Enterprise Leadership',
-  // TECH_LEADERSHIP = 'Tech Leadership',
-  // RESILIENCE = 'Resilience'
+  TECH_LEADERSHIP = 'Tech Leadership',
+  RESILIENCE = 'Resilience'
 }
 
 export const SkillNameLookup = {
@@ -42,8 +42,8 @@ export const SkillNameLookup = {
   'Seniority': SkillName.SENIORITY,
   'Charisma': SkillName.CHARISMA,
   'Enterprise Leadership': SkillName.ENTERPRISE_LEADERSHIP,
-  // 'Tech Leadership': SkillName.TECH_LEADERSHIP,
-  // 'Resilience': SkillName.RESILIENCE
+  'Tech Leadership': SkillName.TECH_LEADERSHIP,
+  'Resilience': SkillName.RESILIENCE
 }
 
 export const SkillEnumFromString = (str: string) => {
@@ -55,12 +55,14 @@ export const SkillEnumFromString = (str: string) => {
 
 export enum UpgradeName {
   MAGNIFYING_APP = 'Magnifier app',
-  PRACTICING_MIRROR = 'Practicing mirror'
+  PRACTICING_MIRROR = 'Practicing mirror',
+  SWITCH_TO_MAC = 'Switch to Mac'
 }
 
 export const UpgradeNameLookup = {
   'Magnifier app': UpgradeName.MAGNIFYING_APP,
   'Practicing mirror': UpgradeName.PRACTICING_MIRROR,
+  'Switch to Mac': UpgradeName.SWITCH_TO_MAC
 }
 
 export const UpgradeEnumFromString = (str: string) => {
@@ -180,6 +182,25 @@ const EnterpriseLeadershipDefinition: SkillDefinitionType = {
   exceptionalVisibility: (player: Player) => player.upgrades[UpgradeName.PRACTICING_MIRROR].unlocked
 };
 
+const TechLeadershipDefinition: SkillDefinitionType = {
+  name: SkillName.TECH_LEADERSHIP,
+  resourceUnlock: null,
+  levelingSetup: [{resourceName: ResourceName.INFLUENCE, initialCost: 80, costMultiplier: 1.1}],
+  levelupImpact: (player: Player) => {
+    player.resources[ResourceName.PRODUCTIVITY].baseIncreasePercent += 6
+    player.resources[ResourceName.KNOWLEDGE].baseIncreasePercent += 4
+  },
+  description: '<div>Gain +6% Productivity capacity</div><div>Gain +4% Knowledge capacity</div>',
+};
+
+const ResilienceDefinition: SkillDefinitionType = {
+  name: SkillName.RESILIENCE,
+  resourceUnlock: null,
+  levelingSetup: [{resourceName: ResourceName.PRODUCTIVITY, initialCost: 50, costMultiplier: 1.15}],
+  levelupImpact: (player: Player) => player.resources[ResourceName.ENERGY].regenIncreasePercent += 5,
+  description: '<div>Gain +5% Energy / second',
+};
+
 export const SkillDefinitions = {
   [SkillName.FOCUS]: FocusDefinition,
   [SkillName.MEMORY]: MemoryDefinition,
@@ -187,6 +208,8 @@ export const SkillDefinitions = {
   [SkillName.SENIORITY]: SeniorityDefinition,
   [SkillName.CHARISMA]: CharismaDefinition,
   [SkillName.ENTERPRISE_LEADERSHIP]: EnterpriseLeadershipDefinition,
+  [SkillName.TECH_LEADERSHIP]: TechLeadershipDefinition,
+  [SkillName.RESILIENCE]: ResilienceDefinition,
 }
 
 type GeneratorActionDefinition = {
@@ -269,7 +292,17 @@ const PracticingMirrorUpgradeDefinition: UpgradeDefinitionType = {
   visible: (player: Player) => player.resources[ResourceName.ENERGY].value >= 700 && player.resources[ResourceName.KNOWLEDGE].value >= 70
 }
 
+const SwitchToMacUpgradeDefinition: UpgradeDefinitionType = {
+  name: UpgradeName.SWITCH_TO_MAC,
+  description: 'A study reports 97% of enterprise users feel more productive after switching to a Mac.',
+  cost: [{resourceName:ResourceName.INFLUENCE, amount: 100}, {resourceName:ResourceName.KNOWLEDGE, amount: 150}],
+  visible: (player: Player) => player.skills[SkillName.SENIORITY].level >= 10
+                            || player.skills[SkillName.CHARISMA].level >= 5
+                            || player.skills[SkillName.ENTERPRISE_LEADERSHIP].level >= 3
+}
+
 export const UpgradeDefinitions = {
   [UpgradeName.MAGNIFYING_APP]: MagnifyingAppUpgradeDefinition,
-  [UpgradeName.PRACTICING_MIRROR]: PracticingMirrorUpgradeDefinition
+  [UpgradeName.PRACTICING_MIRROR]: PracticingMirrorUpgradeDefinition,
+  [UpgradeName.SWITCH_TO_MAC]: SwitchToMacUpgradeDefinition
 }

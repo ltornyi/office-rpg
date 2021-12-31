@@ -43,6 +43,8 @@ type Tskills = {
   [SkillName.SENIORITY]: Tskill,
   [SkillName.CHARISMA]: Tskill,
   [SkillName.ENTERPRISE_LEADERSHIP]: Tskill,
+  [SkillName.TECH_LEADERSHIP]: Tskill,
+  [SkillName.RESILIENCE]: Tskill,
 }
 
 type Tupgrade = {
@@ -54,6 +56,7 @@ type Tupgrade = {
 export type Tupgrades = {
   [UpgradeName.MAGNIFYING_APP]: Tupgrade,
   [UpgradeName.PRACTICING_MIRROR]: Tupgrade
+  [UpgradeName.SWITCH_TO_MAC]: Tupgrade
 }
 
 export type Player = {
@@ -89,10 +92,13 @@ export const buildNewPlayer = () => {
       [SkillName.SENIORITY]: {name: SkillName.SENIORITY, level: 0},
       [SkillName.CHARISMA]: {name: SkillName.CHARISMA, level: 0},
       [SkillName.ENTERPRISE_LEADERSHIP]: {name: SkillName.ENTERPRISE_LEADERSHIP, level: 0},
+      [SkillName.TECH_LEADERSHIP]: {name: SkillName.TECH_LEADERSHIP, level: 0},
+      [SkillName.RESILIENCE]: {name: SkillName.RESILIENCE, level: 0},
     },
     upgrades: {
       [UpgradeName.MAGNIFYING_APP]: {name: UpgradeName.MAGNIFYING_APP, seen: false, unlocked: false},
       [UpgradeName.PRACTICING_MIRROR]: {name: UpgradeName.PRACTICING_MIRROR, seen: false, unlocked: false},
+      [UpgradeName.SWITCH_TO_MAC]: {name: UpgradeName.SWITCH_TO_MAC, seen: false, unlocked: false},
     }
   }
   return val;

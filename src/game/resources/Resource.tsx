@@ -2,12 +2,16 @@ import React from 'react';
 import './Resource.css';
 import { oneDecimal } from '../../utils/formatters';
 import { resourceCapacity, resourceRegenRate } from '../../utils/resourceCalculations';
-import { Tresource } from '../../utils/player';
+import { Player, Tresource } from '../../utils/player';
 
+type ResourcePropType = {
+  resource: Tresource,
+  player: Player
+}
 
-export const Resource = (props: {resource: Tresource}) => {
+export const Resource = (props: ResourcePropType) => {
   const regenPerSec = resourceRegenRate(props.resource);
-  const capacity = resourceCapacity(props.resource);
+  const capacity = resourceCapacity(props.resource, props.player);
   const value = props.resource.value;
   const progressPercent = Math.floor(value / capacity * 1000) / 10;
   
