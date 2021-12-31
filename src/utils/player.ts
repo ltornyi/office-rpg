@@ -57,6 +57,8 @@ export type Tupgrades = {
   [UpgradeName.MAGNIFYING_APP]: Tupgrade,
   [UpgradeName.PRACTICING_MIRROR]: Tupgrade
   [UpgradeName.SWITCH_TO_MAC]: Tupgrade
+  [UpgradeName.PILE_OR_FILE]: Tupgrade
+  [UpgradeName.DIGITAL_LIBRARY]: Tupgrade
 }
 
 export type Player = {
@@ -99,6 +101,8 @@ export const buildNewPlayer = () => {
       [UpgradeName.MAGNIFYING_APP]: {name: UpgradeName.MAGNIFYING_APP, seen: false, unlocked: false},
       [UpgradeName.PRACTICING_MIRROR]: {name: UpgradeName.PRACTICING_MIRROR, seen: false, unlocked: false},
       [UpgradeName.SWITCH_TO_MAC]: {name: UpgradeName.SWITCH_TO_MAC, seen: false, unlocked: false},
+      [UpgradeName.PILE_OR_FILE]: {name: UpgradeName.PILE_OR_FILE, seen: false, unlocked: false},
+      [UpgradeName.DIGITAL_LIBRARY]: {name: UpgradeName.DIGITAL_LIBRARY, seen: false, unlocked: false},
     }
   }
   return val;

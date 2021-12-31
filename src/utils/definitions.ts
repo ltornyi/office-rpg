@@ -56,13 +56,17 @@ export const SkillEnumFromString = (str: string) => {
 export enum UpgradeName {
   MAGNIFYING_APP = 'Magnifier app',
   PRACTICING_MIRROR = 'Practicing mirror',
-  SWITCH_TO_MAC = 'Switch to Mac'
+  SWITCH_TO_MAC = 'Switch to Mac',
+  PILE_OR_FILE = 'Pile or File',
+  DIGITAL_LIBRARY = 'Digital Library',
 }
 
 export const UpgradeNameLookup = {
   'Magnifier app': UpgradeName.MAGNIFYING_APP,
   'Practicing mirror': UpgradeName.PRACTICING_MIRROR,
-  'Switch to Mac': UpgradeName.SWITCH_TO_MAC
+  'Switch to Mac': UpgradeName.SWITCH_TO_MAC,
+  'Pile or File': UpgradeName.PILE_OR_FILE,
+  'Digital Library': UpgradeName.DIGITAL_LIBRARY
 }
 
 export const UpgradeEnumFromString = (str: string) => {
@@ -98,7 +102,7 @@ const KnowledgeDefinition: ResourceDefinitionType = {
 
 const InfluenceDefinition: ResourceDefinitionType = {
   name: ResourceName.INFLUENCE,
-  baseCapacity: 55,
+  baseCapacity: 65,
   regenPerSec: 0
 }
 
@@ -126,7 +130,8 @@ export type SkillDefinitionType = {
   description: string,
   resourceUnlock: SkillResourceUnlockType | null,
   levelingSetup: SkillLevelingSetup[],
-  exceptionalVisibility?: (pl: Player) => boolean
+  exceptionalVisibility?: (pl: Player) => boolean,
+  dynamicDescription?: (player: Player) => string
 };
 
 const FocusDefinition: SkillDefinitionType = {
@@ -145,7 +150,14 @@ const MemoryDefinition: SkillDefinitionType = {
     player.resources[ResourceName.PRODUCTIVITY].baseIncreaseAmount += 2;
     player.resources[ResourceName.KNOWLEDGE].baseIncreaseAmount += 6;
   },
-  description: '<div>Gain +2 Productivity capacity</div><div>Gain +6 Knowledge capacity</div>'
+  description: '<div>Gain +2 Productivity capacity</div><div>Gain +6 Knowledge capacity</div>',
+  dynamicDescription: (player: Player) => {
+    let descr = '<div>Gain +2 Productivity capacity</div><div>Gain +6 Knowledge capacity</div>';
+    if (player.upgrades[UpgradeName.PILE_OR_FILE].unlocked) {
+      descr += '<div>+0.3 Productivity gained</div>'
+    }
+    return descr;
+  }
 };
 
 const ChangeManagementDefinition: SkillDefinitionType = {
@@ -191,6 +203,13 @@ const TechLeadershipDefinition: SkillDefinitionType = {
     player.resources[ResourceName.KNOWLEDGE].baseIncreasePercent += 4
   },
   description: '<div>Gain +6% Productivity capacity</div><div>Gain +4% Knowledge capacity</div>',
+  dynamicDescription: (player: Player) => {
+    let descr = '<div>Gain +6% Productivity capacity</div><div>Gain +4% Knowledge capacity</div>';
+    if (player.upgrades[UpgradeName.DIGITAL_LIBRARY].unlocked) {
+      descr += '<div>+0.3 Knowledge gained</div>'
+    }
+    return descr;
+  }
 };
 
 const ResilienceDefinition: SkillDefinitionType = {
@@ -289,7 +308,7 @@ const PracticingMirrorUpgradeDefinition: UpgradeDefinitionType = {
   name: UpgradeName.PRACTICING_MIRROR,
   description: 'Great for improving your card magic. There might be other use cases, too.',
   cost: [{resourceName:ResourceName.ENERGY, amount: 1000}, {resourceName:ResourceName.KNOWLEDGE, amount: 100}],
-  visible: (player: Player) => player.resources[ResourceName.ENERGY].value >= 700 && player.resources[ResourceName.KNOWLEDGE].value >= 70
+  visible: (player: Player) => player.resources[ResourceName.ENERGY].value >= 350 && player.resources[ResourceName.KNOWLEDGE].value >= 20
 }
 
 const SwitchToMacUpgradeDefinition: UpgradeDefinitionType = {
@@ -301,8 +320,24 @@ const SwitchToMacUpgradeDefinition: UpgradeDefinitionType = {
                             || player.skills[SkillName.ENTERPRISE_LEADERSHIP].level >= 3
 }
 
+const PileOrFileUpgradeDefinition: UpgradeDefinitionType = {
+  name: UpgradeName.PILE_OR_FILE,
+  description: 'Pile or file? Neither - now memory improves productivity gains',
+  cost: [{resourceName:ResourceName.KNOWLEDGE, amount: 120}],
+  visible: (player: Player) => player.skills[SkillName.MEMORY].level >= 12
+}
+
+const DigitalLibraryUpgradeDefinition: UpgradeDefinitionType = {
+  name: UpgradeName.DIGITAL_LIBRARY,
+  description: 'Tech leadership generates extra knowledge',
+  cost: [{resourceName:ResourceName.KNOWLEDGE, amount: 120}],
+  visible: (player: Player) => player.skills[SkillName.TECH_LEADERSHIP].level >= 1
+}
+
 export const UpgradeDefinitions = {
   [UpgradeName.MAGNIFYING_APP]: MagnifyingAppUpgradeDefinition,
   [UpgradeName.PRACTICING_MIRROR]: PracticingMirrorUpgradeDefinition,
-  [UpgradeName.SWITCH_TO_MAC]: SwitchToMacUpgradeDefinition
+  [UpgradeName.SWITCH_TO_MAC]: SwitchToMacUpgradeDefinition,
+  [UpgradeName.PILE_OR_FILE]: PileOrFileUpgradeDefinition,
+  [UpgradeName.DIGITAL_LIBRARY]: DigitalLibraryUpgradeDefinition
 }

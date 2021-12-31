@@ -1,4 +1,4 @@
-import { GeneratorActionDefinitions, ResourceEnumFromString, ResourceName, ResourceNameNotEnergy } from "./definitions"
+import { GeneratorActionDefinitions, ResourceEnumFromString, ResourceName, ResourceNameNotEnergy, SkillName, UpgradeName } from "./definitions"
 import { Player } from "./player"
 
 export const generatorActionVisible = (player: Player, forResourceName: ResourceNameNotEnergy) => {
@@ -61,8 +61,23 @@ export const genActionEnergyUsage = (forResourceName: ResourceNameNotEnergy, cur
   return GeneratorActionDefinitions[forResourceName].baseEnergyUsage * Math.pow(2.0, currentLevel - 1);
 }
 
+const adjustGeneratedBaseAmount = (baseAmount: number, player: Player, forResourceName: ResourceNameNotEnergy) => {
+  let result = baseAmount;
+  if (forResourceName === ResourceName.PRODUCTIVITY) {
+    if (player.upgrades[UpgradeName.PILE_OR_FILE].unlocked) {
+      result += 0.3 * player.skills[SkillName.MEMORY].level
+    }
+  } else if (forResourceName === ResourceName.KNOWLEDGE) {
+    if (player.upgrades[UpgradeName.DIGITAL_LIBRARY].unlocked) {
+      result += 0.3 * player.skills[SkillName.TECH_LEADERSHIP].level
+    }
+  }
+  return result;
+}
+
 export const genActionResourceGenerated = (player: Player, forResourceName: ResourceNameNotEnergy) => {
-  const baseAmount = GeneratorActionDefinitions[forResourceName].resourceGenerated;
+  let baseAmount = GeneratorActionDefinitions[forResourceName].resourceGenerated;
+  baseAmount = adjustGeneratedBaseAmount(baseAmount, player, forResourceName)
   const playerActivitiesLevel = player.activitiesLevel - 1;
   const genActionLevel = player.generatorActionMasteryLevels[forResourceName].currentLevel - 1;
   const genActionMastery = player.generatorActionMasteryLevels[forResourceName].mastery - 1;

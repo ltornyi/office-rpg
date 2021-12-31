@@ -15,7 +15,7 @@ export const Skill = (props: SkillPropType) => {
   const levelingCosts = calcLevelingCosts(props.skillName, skill.level);
   const canLevelArr = CalcCanLevelup(props.player, levelingCosts);
   const canLevel = canLevelUp(canLevelArr);
-  const description = SkillDefinitions[props.skillName].description;
+  const description = SkillDefinitions[props.skillName].dynamicDescription ? SkillDefinitions[props.skillName].dynamicDescription!(props.player) : SkillDefinitions[props.skillName].description;
   return (
     <div
       className={'skillrow forthis ' + (canLevel ? 'clickable' : '')}
