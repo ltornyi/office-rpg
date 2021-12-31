@@ -1,3 +1,4 @@
+import { deepSpread } from "./deepSpread";
 import { buildNewPlayer, Player } from "./player";
 
 export type SaveSlotInfo = {
@@ -24,14 +25,15 @@ export const deleteSaveSlot = (slot: number) => {
 
 export const loadSaveSlot = (slot: number): Player => {
   const savegame = localStorage.getItem(saveName(slot));
+  let newPlayer = buildNewPlayer();
   if (savegame) {
-    //The lines below implement offline progression
-    // const restoredPlayer = JSON.parse(savegame) as Player;
-    // return generateNewPlayerState(restoredPlayer, (Date.now() - restoredPlayer.lastUpdateTimeStamp)/1000);
-    return JSON.parse(savegame) as Player;
-  } else {
-    return buildNewPlayer()
+    const restoredPlayer = JSON.parse(savegame) as Player;
+    //crude compatibility with older saves:
+    newPlayer = deepSpread(newPlayer, restoredPlayer);
+    //The line below implements offline progression
+    //newPlayer = generateNewPlayerState(newPlayer, (Date.now() - newPlayer.lastUpdateTimeStamp)/1000);
   }
+  return newPlayer;
 }
 
 export const savePlayerToSlot = (player: Player, slot: number) => {
