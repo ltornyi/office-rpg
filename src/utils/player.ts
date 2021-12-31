@@ -45,6 +45,7 @@ type Tskills = {
   [SkillName.ENTERPRISE_LEADERSHIP]: Tskill,
   [SkillName.TECH_LEADERSHIP]: Tskill,
   [SkillName.RESILIENCE]: Tskill,
+  [SkillName.AGILITY]: Tskill,
 }
 
 type Tupgrade = {
@@ -96,6 +97,7 @@ export const buildNewPlayer = () => {
       [SkillName.ENTERPRISE_LEADERSHIP]: {name: SkillName.ENTERPRISE_LEADERSHIP, level: 0},
       [SkillName.TECH_LEADERSHIP]: {name: SkillName.TECH_LEADERSHIP, level: 0},
       [SkillName.RESILIENCE]: {name: SkillName.RESILIENCE, level: 0},
+      [SkillName.AGILITY]: {name: SkillName.AGILITY, level: 0},
     },
     upgrades: {
       [UpgradeName.MAGNIFYING_APP]: {name: UpgradeName.MAGNIFYING_APP, seen: false, unlocked: false},

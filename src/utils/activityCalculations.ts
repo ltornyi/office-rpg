@@ -53,7 +53,8 @@ export const genActionCooldownTime = (player: Player, forResourceName: ResourceN
   const genActionLevel = player.generatorActionMasteryLevels[forResourceName].currentLevel - 1;
   //+25% for each action level (multiplicative)
   //-1% for each global activities level (additive)
-  return baseCooldown * (1 - 0.01 * playerActivitiesLevel) * Math.pow(1.25, genActionLevel);
+  //-1% for each agility level (multiplicative)
+  return baseCooldown * (1 - 0.01 * playerActivitiesLevel) * Math.pow(1.25, genActionLevel) * Math.pow(0.95, player.skills[SkillName.AGILITY].level);
 }
 
 export const genActionEnergyUsage = (forResourceName: ResourceNameNotEnergy, currentLevel: number) => {

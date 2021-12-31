@@ -20,6 +20,10 @@
   text-align: left;
 }
 
+.skillupgradecost > span {
+  margin-right: 1em;
+}
+
 .skillupgradecost > span.notenoughresource {
   color: red;
 }

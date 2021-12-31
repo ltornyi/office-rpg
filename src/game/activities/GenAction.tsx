@@ -1,4 +1,4 @@
-import { canActivateGenAction, canDecreaseCurrentLevel, canIncreaseCurrentLevel, canUpgradeGenAction, genActionEnergyUsage, genActionLevelupResourceName, genActionName, genActionNextLevelResourceNeeded,
+import { canActivateGenAction, canDecreaseCurrentLevel, canIncreaseCurrentLevel, canUpgradeGenAction, genActionCooldownTime, genActionEnergyUsage, genActionLevelupResourceName, genActionName, genActionNextLevelResourceNeeded,
   genActionResourceGenerated, hasEnoughEnergyToActivateGenAction } from '../../utils/activityCalculations'
 import { ResourceNameNotEnergy } from '../../utils/definitions'
 import { experienceForNextMasteryLevel } from '../../utils/experience'
@@ -78,6 +78,7 @@ export const GenAction = (props: GenActionPropType) => {
 
       <div className='showthat'>
         <div>{'Gain +' + oneDecimal(genActionResourceGenerated(props.player, props.forResourceName)) + ' ' + props.forResourceName}</div>
+        <div>{oneDecimal(genActionCooldownTime(props.player, props.forResourceName))}s cooldown</div>
         {
           props.hasMagnifier &&
           <>

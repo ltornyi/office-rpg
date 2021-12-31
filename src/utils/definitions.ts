@@ -32,7 +32,8 @@ export enum SkillName {
   CHARISMA = 'Charisma',
   ENTERPRISE_LEADERSHIP = 'Enterprise Leadership',
   TECH_LEADERSHIP = 'Tech Leadership',
-  RESILIENCE = 'Resilience'
+  RESILIENCE = 'Resilience',
+  AGILITY = 'Agility'
 }
 
 export const SkillNameLookup = {
@@ -43,7 +44,8 @@ export const SkillNameLookup = {
   'Charisma': SkillName.CHARISMA,
   'Enterprise Leadership': SkillName.ENTERPRISE_LEADERSHIP,
   'Tech Leadership': SkillName.TECH_LEADERSHIP,
-  'Resilience': SkillName.RESILIENCE
+  'Resilience': SkillName.RESILIENCE,
+  'Agility': SkillName.AGILITY
 }
 
 export const SkillEnumFromString = (str: string) => {
@@ -217,7 +219,18 @@ const ResilienceDefinition: SkillDefinitionType = {
   resourceUnlock: null,
   levelingSetup: [{resourceName: ResourceName.PRODUCTIVITY, initialCost: 50, costMultiplier: 1.15}],
   levelupImpact: (player: Player) => player.resources[ResourceName.ENERGY].regenIncreasePercent += 5,
-  description: '<div>Gain +5% Energy / second',
+  description: '<div>Gain +5% Energy / second</div>',
+};
+
+const AgilityDefinition: SkillDefinitionType = {
+  name: SkillName.AGILITY,
+  resourceUnlock: null,
+  levelingSetup: [
+    {resourceName: ResourceName.PRODUCTIVITY, initialCost: 50, costMultiplier: 1.15},
+    {resourceName: ResourceName.INFLUENCE, initialCost: 40, costMultiplier: 1.15}
+  ],
+  levelupImpact: (player: Player) => player.resources[ResourceName.ENERGY].regenIncreasePercent += 5,
+  description: '<div>-5% cooldown time</div>',
 };
 
 export const SkillDefinitions = {
@@ -229,6 +242,7 @@ export const SkillDefinitions = {
   [SkillName.ENTERPRISE_LEADERSHIP]: EnterpriseLeadershipDefinition,
   [SkillName.TECH_LEADERSHIP]: TechLeadershipDefinition,
   [SkillName.RESILIENCE]: ResilienceDefinition,
+  [SkillName.AGILITY]: AgilityDefinition,
 }
 
 type GeneratorActionDefinition = {
