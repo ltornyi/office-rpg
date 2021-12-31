@@ -65,7 +65,15 @@ const ActivitiesSummary = (props: ActivitiesSummaryProptype) => {
 
   return (
     <div className='activitiessummary'>
-      <div className='activitylevel'>{props.hasMagnifier ? 'Lvl: ' + props.level : ''}</div>
+      <div className='activitylevel forthis'>
+        {props.hasMagnifier ? 'Lvl: ' + props.level : ''}
+        <div className="showthat">
+          <div>For each level beyond 1:</div>
+          <div>+4% power</div>
+          <div>-1% cooldown</div>
+          <div>+1% experience</div>
+        </div>
+      </div>
       <div className='activityexperience'>{props.hasMagnifier ? 'Exp: ' + integerPart(props.totalExp) + ' / ' + expForNextLevel : ''}</div>
     </div>
   );
