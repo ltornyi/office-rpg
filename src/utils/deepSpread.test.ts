@@ -1,6 +1,6 @@
 import { expect } from "@jest/globals";
+import { ResourceName } from "../game/definitions/resourceDefinitions";
 import { deepSpread } from "./deepSpread";
-import { ResourceName } from "./definitions";
 
 test('deepSpread trivial', () => {
   const target = {};

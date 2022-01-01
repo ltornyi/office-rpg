@@ -1,12 +1,13 @@
 import React from 'react';
-import { generatorActionVisible, hasVisibleGeneratorAction } from '../../utils/activityCalculations';
-import { ResourceEnumFromString, ResourceName, ResourceNameNotEnergy, UpgradeName } from '../../utils/definitions';
-import { experienceForNextActivitiesLevel } from '../../utils/experience';
+import { generatorActionVisible, hasVisibleGeneratorAction } from '../calculations/activityCalculations';
+import { experienceForNextActivitiesLevel } from '../calculations/experience';
 import { integerPart } from '../../utils/formatters';
-import { Player } from '../../utils/player';
-import { hasUpgrade } from '../../utils/upgradeCalculations';
+import { Player } from '../definitions/player';
+import { hasUpgrade } from '../calculations/upgradeCalculations';
 import './Activities.css';
 import { GenAction } from './GenAction';
+import { ResourceEnumFromString, ResourceName, ResourceNameNotEnergy } from '../definitions/resourceDefinitions';
+import { UpgradeName } from '../definitions/upgradeDefinitions';
 
 type ActivitiesPropType = {
   player: Player,

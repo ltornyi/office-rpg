@@ -1,4 +1,6 @@
-import { ResourceName, SkillName, UpgradeName } from "./definitions"
+import { ResourceName } from "./resourceDefinitions"
+import { SkillName } from "./skillDefinitions"
+import { UpgradeName } from "./upgradeDefinitions"
 
 export type TgeneratorActionMasteryLevel = {
   mastery: number,
@@ -13,6 +15,7 @@ export type TgeneratorActionMasteryLevels = {
   [ResourceName.KNOWLEDGE]: TgeneratorActionMasteryLevel,
   [ResourceName.INFLUENCE]: TgeneratorActionMasteryLevel,
   [ResourceName.CONCEPTS]: TgeneratorActionMasteryLevel,
+  [ResourceName.DESIGNS]: TgeneratorActionMasteryLevel,
 }
 
 export type Tresource = {
@@ -30,7 +33,8 @@ export type Tresources = {
   [ResourceName.PRODUCTIVITY]: Tresource,
   [ResourceName.KNOWLEDGE]: Tresource,
   [ResourceName.INFLUENCE]: Tresource
-  [ResourceName.CONCEPTS]: Tresource
+  [ResourceName.CONCEPTS]: Tresource,
+  [ResourceName.DESIGNS]: Tresource,
 }
 
 type Tskill = {
@@ -50,6 +54,7 @@ type Tskills = {
   [SkillName.RESILIENCE]: Tskill,
   [SkillName.AGILITY]: Tskill,
   [SkillName.IDEA_MANAGEMENT]: Tskill,
+  [SkillName.DESIGN_THINKING]: Tskill,
 }
 
 type Tupgrade = {
@@ -60,11 +65,12 @@ type Tupgrade = {
 
 export type Tupgrades = {
   [UpgradeName.MAGNIFYING_APP]: Tupgrade,
-  [UpgradeName.PRACTICING_MIRROR]: Tupgrade
-  [UpgradeName.SWITCH_TO_MAC]: Tupgrade
-  [UpgradeName.PILE_OR_FILE]: Tupgrade
-  [UpgradeName.DIGITAL_LIBRARY]: Tupgrade
-  [UpgradeName.PRODUCT_MANIFESTO]: Tupgrade
+  [UpgradeName.PRACTICING_MIRROR]: Tupgrade,
+  [UpgradeName.SWITCH_TO_MAC]: Tupgrade,
+  [UpgradeName.PILE_OR_FILE]: Tupgrade,
+  [UpgradeName.DIGITAL_LIBRARY]: Tupgrade,
+  [UpgradeName.PRODUCT_MANIFESTO]: Tupgrade,
+  [UpgradeName.DISCOVER_DESIGN]: Tupgrade
 }
 
 export type Player = {
@@ -87,6 +93,7 @@ export const buildNewPlayer = () => {
       [ResourceName.KNOWLEDGE]: {mastery: 1, currentLevel: 1, maxLevel: 1, experience: 0, cooldownLeft: 0},
       [ResourceName.INFLUENCE]: {mastery: 1, currentLevel: 1, maxLevel: 1, experience: 0, cooldownLeft: 0},
       [ResourceName.CONCEPTS]: {mastery: 1, currentLevel: 1, maxLevel: 1, experience: 0, cooldownLeft: 0},
+      [ResourceName.DESIGNS]: {mastery: 1, currentLevel: 1, maxLevel: 1, experience: 0, cooldownLeft: 0},
     },
     resources: {
       [ResourceName.ENERGY]: {name: ResourceName.ENERGY, baseIncreaseAmount: 0, baseIncreasePercent: 0, regenIncreaseAmount: 0, regenIncreasePercent: 0, unlocked: true, value:0},
@@ -94,6 +101,7 @@ export const buildNewPlayer = () => {
       [ResourceName.KNOWLEDGE]: {name: ResourceName.KNOWLEDGE, baseIncreaseAmount: 0, baseIncreasePercent: 0, regenIncreaseAmount: 0, regenIncreasePercent: 0, unlocked: false, value:0},
       [ResourceName.INFLUENCE]: {name: ResourceName.INFLUENCE, baseIncreaseAmount: 0, baseIncreasePercent: 0, regenIncreaseAmount: 0, regenIncreasePercent: 0, unlocked: false, value:0},
       [ResourceName.CONCEPTS]: {name: ResourceName.CONCEPTS, baseIncreaseAmount: 0, baseIncreasePercent: 0, regenIncreaseAmount: 0, regenIncreasePercent: 0, unlocked: false, value:0},
+      [ResourceName.DESIGNS]: {name: ResourceName.DESIGNS, baseIncreaseAmount: 0, baseIncreasePercent: 0, regenIncreaseAmount: 0, regenIncreasePercent: 0, unlocked: false, value:0},
     },
     skills: {
       [SkillName.FOCUS]: {name: SkillName.FOCUS, level: 0, seen: false},
@@ -106,6 +114,7 @@ export const buildNewPlayer = () => {
       [SkillName.RESILIENCE]: {name: SkillName.RESILIENCE, level: 0, seen: false},
       [SkillName.AGILITY]: {name: SkillName.AGILITY, level: 0, seen: false},
       [SkillName.IDEA_MANAGEMENT]: {name: SkillName.IDEA_MANAGEMENT, level: 0, seen: false},
+      [SkillName.DESIGN_THINKING]: {name: SkillName.DESIGN_THINKING, level: 0, seen: false},
     },
     upgrades: {
       [UpgradeName.MAGNIFYING_APP]: {name: UpgradeName.MAGNIFYING_APP, seen: false, unlocked: false},
@@ -114,6 +123,7 @@ export const buildNewPlayer = () => {
       [UpgradeName.PILE_OR_FILE]: {name: UpgradeName.PILE_OR_FILE, seen: false, unlocked: false},
       [UpgradeName.DIGITAL_LIBRARY]: {name: UpgradeName.DIGITAL_LIBRARY, seen: false, unlocked: false},
       [UpgradeName.PRODUCT_MANIFESTO]: {name: UpgradeName.PRODUCT_MANIFESTO, seen: false, unlocked: false},
+      [UpgradeName.DISCOVER_DESIGN]: {name: UpgradeName.DISCOVER_DESIGN, seen: false, unlocked: false},
     }
   }
   return val;

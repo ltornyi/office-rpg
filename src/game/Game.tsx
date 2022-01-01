@@ -9,8 +9,10 @@ import { Skills } from './skills/Skills';
 import { Upgrades } from './upgrades/Upgrades';
 import { loadSaveSlot, savePlayerToSlot} from '../utils/saveload';
 import { useAnimationFrame } from './useAnimationFrame';
-import { ResourceNameNotEnergy, SkillName, UpgradeName } from '../utils/definitions';
 import { activateGenAction, buyUpgrade, decreaseGenActionCurrentLevel, generateNewPlayerState, increaseGenActionCurrentLevel, levelUpSkill, upgradeGenAction } from './gamefunctions';
+import { SkillName } from './definitions/skillDefinitions';
+import { ResourceNameNotEnergy } from './definitions/resourceDefinitions';
+import { UpgradeName } from './definitions/upgradeDefinitions';
 
 export type gamePropsType = {
   selectedSlot: number

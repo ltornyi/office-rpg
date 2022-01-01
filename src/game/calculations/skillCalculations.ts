@@ -1,5 +1,6 @@
-import { ResourceName, SkillDefinitions, SkillEnumFromString, SkillName } from "./definitions";
-import { Player } from "./player";
+import { Player } from "../definitions/player";
+import { ResourceName } from "../definitions/resourceDefinitions";
+import { SkillDefinitions, SkillEnumFromString, SkillName } from "../definitions/skillDefinitions";
 
 export const skillVisible = (player: Player, skill: SkillName) => {
   //if the skill was seen already or leveled, then it's visible

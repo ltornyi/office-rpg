@@ -1,8 +1,8 @@
 import React from 'react';
 import './Resources.css';
-import { ResourceEnumFromString } from '../../utils/definitions';
-import { Player } from '../../utils/player';
+import { Player } from '../definitions/player';
 import {Resource} from './Resource';
+import { ResourceEnumFromString } from '../definitions/resourceDefinitions';
 
 
 type ResourcesPropType = {

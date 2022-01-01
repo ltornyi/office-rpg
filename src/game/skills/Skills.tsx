@@ -1,9 +1,9 @@
 import React from 'react';
 import './Skills.css';
-import { hasVisibleSkill, skillVisible } from '../../utils/skillCalculations';
-import { SkillEnumFromString, SkillName } from '../../utils/definitions';
-import { Player } from '../../utils/player';
+import { hasVisibleSkill, skillVisible } from '../calculations/skillCalculations';
+import { Player } from '../definitions/player';
 import { Skill } from './Skill';
+import { SkillEnumFromString, SkillName } from '../definitions/skillDefinitions';
 
 
 type SkillsPropType = {

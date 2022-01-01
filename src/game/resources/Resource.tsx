@@ -1,8 +1,8 @@
 import React from 'react';
 import './Resource.css';
 import { oneDecimal } from '../../utils/formatters';
-import { resourceCapacity, resourceRegenRate } from '../../utils/resourceCalculations';
-import { Player, Tresource } from '../../utils/player';
+import { resourceCapacity, resourceRegenRate } from '../calculations/resourceCalculations';
+import { Player, Tresource } from '../definitions/player';
 
 type ResourcePropType = {
   resource: Tresource,

@@ -1,5 +1,6 @@
-import { Player } from "./player";
-import { ResourceName, UpgradeDefinitions, UpgradeName } from "./definitions";
+import { Player } from "../definitions/player";
+import { ResourceName } from "../definitions/resourceDefinitions";
+import { UpgradeDefinitions, UpgradeName } from "../definitions/upgradeDefinitions";
 
 export const hasUpgrade = (player: Player, upgrade: UpgradeName) => player.upgrades[upgrade].unlocked
 

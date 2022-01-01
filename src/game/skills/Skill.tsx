@@ -1,8 +1,8 @@
-import { SkillDefinitions, SkillName } from '../../utils/definitions';
 import { resourceCost } from '../../utils/formatters';
-import { Player } from '../../utils/player';
-import { CalcCanLevelup, calcLevelingCosts, canLevelUp, SkillCanLevelUpArr, SkillLevelingCosts } from '../../utils/skillCalculations';
+import { Player } from '../definitions/player';
+import { CalcCanLevelup, calcLevelingCosts, canLevelUp, SkillCanLevelUpArr, SkillLevelingCosts } from '../calculations/skillCalculations';
 import './Skill.css';
+import { SkillDefinitions, SkillName } from '../definitions/skillDefinitions';
 
 type SkillPropType = {
   player: Player,

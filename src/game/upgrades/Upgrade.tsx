@@ -1,8 +1,8 @@
 import './Upgrade.css';
-import { UpgradeDefinitions, UpgradeName } from "../../utils/definitions"
-import { Player } from "../../utils/player"
-import { CalcCanAffordUpgrade, canAffordUpgrade, canAffordUpgradeResourceArr } from "../../utils/upgradeCalculations"
+import { Player } from "../definitions/player"
+import { CalcCanAffordUpgrade, canAffordUpgrade, canAffordUpgradeResourceArr } from "../calculations/upgradeCalculations"
 import { resourceCost } from '../../utils/formatters';
+import { UpgradeDefinitions, UpgradeName } from '../definitions/upgradeDefinitions';
 
 type UpgradePropType = {
   player: Player,

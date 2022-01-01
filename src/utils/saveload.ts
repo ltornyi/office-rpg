@@ -1,5 +1,5 @@
 import { deepSpread } from "./deepSpread";
-import { buildNewPlayer, Player } from "./player";
+import { buildNewPlayer, Player } from "../game/definitions/player";
 
 export type SaveSlotInfo = {
   exists: boolean,

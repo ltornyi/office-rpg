@@ -1,10 +1,13 @@
-import { canActivateGenAction, canDecreaseCurrentLevel, canIncreaseCurrentLevel, canUpgradeGenAction, genActionCooldownTime, genActionEnergyUsage, genActionExperienceGenerated, genActionNextLevelResourceNeeded, genActionResourceGenerated } from "../utils/activityCalculations";
-import { GeneratorActionDefinitions, ResourceEnumFromString, ResourceName, ResourceNameNotEnergy, SkillDefinitions, SkillEnumFromString, SkillName, UpgradeDefinitions, UpgradeEnumFromString, UpgradeName } from "../utils/definitions";
-import { generatorActionLevel, playerActivitiesLevel } from "../utils/experience";
-import { clonePlayer, Player, TgeneratorActionMasteryLevel, TgeneratorActionMasteryLevels, Tresource, Tresources } from "../utils/player";
-import { resourceCapacity, resourceRegenRate } from "../utils/resourceCalculations";
-import { CalcCanLevelup, calcLevelingCosts, canLevelUp, skillVisible } from "../utils/skillCalculations";
-import { canAffordUpgrade, upgradeVisible } from "../utils/upgradeCalculations";
+import { canActivateGenAction, canDecreaseCurrentLevel, canIncreaseCurrentLevel, canUpgradeGenAction, genActionCooldownTime, genActionEnergyUsage, genActionExperienceGenerated, genActionExtraResourceUsage, genActionNextLevelResourceNeeded, genActionResourceGenerated } from "./calculations/activityCalculations";
+import { generatorActionLevel, playerActivitiesLevel } from "./calculations/experience";
+import { clonePlayer, Player, TgeneratorActionMasteryLevel, TgeneratorActionMasteryLevels, Tresource, Tresources } from "./definitions/player";
+import { resourceCapacity, resourceRegenRate } from "./calculations/resourceCalculations";
+import { CalcCanLevelup, calcLevelingCosts, canLevelUp, skillVisible } from "./calculations/skillCalculations";
+import { canAffordUpgrade, upgradeVisible } from "./calculations/upgradeCalculations";
+import { ResourceEnumFromString, ResourceName, ResourceNameNotEnergy } from "./definitions/resourceDefinitions";
+import { UpgradeDefinitions, UpgradeEnumFromString, UpgradeName } from "./definitions/upgradeDefinitions";
+import { SkillDefinitions, SkillEnumFromString, SkillName } from "./definitions/skillDefinitions";
+import { GeneratorActionDefinitions } from "./definitions/generatorActionDefinitions";
 
 const addValueToResource = (res: Tresource, val: number, player: Player) => {
   res.value = Math.min(res.value + val, resourceCapacity(res, player));
@@ -127,6 +130,12 @@ export const activateGenAction = (player: Player, forResourceName: ResourceNameN
     const currentLevel = newPlayer.generatorActionMasteryLevels[forResourceName].currentLevel;
     const energyUsage = genActionEnergyUsage(forResourceName, currentLevel);
     substractValueFromResource(newPlayer.resources[ResourceName.ENERGY], energyUsage);
+
+    //consumes extra resource if any
+    const extraResourceUsage = genActionExtraResourceUsage(forResourceName, currentLevel);
+    if (extraResourceUsage) {
+      substractValueFromResource(newPlayer.resources[extraResourceUsage.resourceName], extraResourceUsage.amount);
+    }
 
     //generates resource
     const resourceGenerated = genActionResourceGenerated(newPlayer, forResourceName);

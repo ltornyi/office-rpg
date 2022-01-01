@@ -1,5 +1,8 @@
-import { GeneratorActionDefinitions, ResourceEnumFromString, ResourceName, ResourceNameNotEnergy, SkillName, UpgradeName } from "./definitions"
-import { Player } from "./player"
+import { GeneratorActionDefinitions } from "../definitions/generatorActionDefinitions";
+import { Player } from "../definitions/player"
+import { ResourceEnumFromString, ResourceName, ResourceNameNotEnergy } from "../definitions/resourceDefinitions";
+import { SkillName } from "../definitions/skillDefinitions";
+import { UpgradeName } from "../definitions/upgradeDefinitions";
 
 export const generatorActionVisible = (player: Player, forResourceName: ResourceNameNotEnergy) => {
   return player.resources[forResourceName].unlocked
@@ -62,6 +65,18 @@ export const genActionEnergyUsage = (forResourceName: ResourceNameNotEnergy, cur
   return GeneratorActionDefinitions[forResourceName].baseEnergyUsage * Math.pow(2.0, currentLevel - 1);
 }
 
+export const genActionExtraResourceUsage = (forResourceName: ResourceNameNotEnergy, currentLevel: number) => {
+  if (GeneratorActionDefinitions[forResourceName].extraResourceUsage) {
+    const {resourceName, baseUsage, multiplier} = GeneratorActionDefinitions[forResourceName].extraResourceUsage!;
+    return {
+      resourceName: resourceName,
+      amount: baseUsage * Math.pow(multiplier, currentLevel - 1)
+    }
+  } else {
+    return null;
+  }
+}
+
 const adjustGeneratedBaseAmount = (baseAmount: number, player: Player, forResourceName: ResourceNameNotEnergy) => {
   let result = baseAmount;
   if (forResourceName === ResourceName.PRODUCTIVITY) {
@@ -72,6 +87,8 @@ const adjustGeneratedBaseAmount = (baseAmount: number, player: Player, forResour
     if (player.upgrades[UpgradeName.DIGITAL_LIBRARY].unlocked) {
       result += 0.3 * player.skills[SkillName.TECH_LEADERSHIP].level
     }
+  } else if (forResourceName === ResourceName.INFLUENCE) {
+    result += 1 * player.skills[SkillName.DESIGN_THINKING].level
   }
   return result;
 }
@@ -106,8 +123,21 @@ export const hasEnoughEnergyToActivateGenAction = (player: Player, forResourceNa
   return player.resources[ResourceName.ENERGY].value >= genActionEnergyUsage(forResourceName, level)
 }
 
+export const hasEnoughExtraResourceToActivateGenAction = (player: Player, forResourceName: ResourceNameNotEnergy) => {
+  const level = player.generatorActionMasteryLevels[forResourceName].currentLevel;
+  const extraUsage = genActionExtraResourceUsage(forResourceName, level);
+  if (extraUsage) {
+    return player.resources[extraUsage.resourceName].value >= extraUsage.amount
+  } else {
+    return true;
+  }
+}
+
 export const canActivateGenAction = (player: Player, forResourceName: ResourceNameNotEnergy) => {
-  return (!isGenActionOnCooldown(player, forResourceName) && hasEnoughEnergyToActivateGenAction(player, forResourceName))
+  return (!isGenActionOnCooldown(player, forResourceName)
+    && hasEnoughEnergyToActivateGenAction(player, forResourceName)
+    && hasEnoughExtraResourceToActivateGenAction(player, forResourceName)
+  )
 }
 
 export const canDecreaseCurrentLevel = (player: Player, forResourceName: ResourceNameNotEnergy) => {

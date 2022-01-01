@@ -1,5 +1,6 @@
-import { ResourceDefinitions, ResourceName, UpgradeName } from "./definitions";
-import { Player, Tresource } from "./player";
+import { Player, Tresource } from "../definitions/player";
+import { ResourceDefinitions, ResourceName } from "../definitions/resourceDefinitions";
+import { UpgradeName } from "../definitions/upgradeDefinitions";
 
 
 export const resourceCapacity = (res: Tresource, player: Player): number => {

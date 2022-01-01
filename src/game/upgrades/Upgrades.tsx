@@ -1,9 +1,9 @@
 import React from 'react';
-import { UpgradeEnumFromString, UpgradeName } from '../../utils/definitions';
-import { Player } from '../../utils/player';
-import { upgradeVisible } from '../../utils/upgradeCalculations';
+import { Player } from '../definitions/player';
+import { upgradeVisible } from '../calculations/upgradeCalculations';
 import { Upgrade } from './Upgrade';
 import './Upgrades.css';
+import { UpgradeEnumFromString, UpgradeName } from '../definitions/upgradeDefinitions';
 
 type UpgradesPropType = {
   player: Player,

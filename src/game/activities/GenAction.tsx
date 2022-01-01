@@ -1,9 +1,9 @@
-import { canActivateGenAction, canDecreaseCurrentLevel, canIncreaseCurrentLevel, canUpgradeGenAction, genActionCooldownTime, genActionEnergyUsage, genActionLevelupResourceName, genActionName, genActionNextLevelResourceNeeded,
-  genActionResourceGenerated, hasEnoughEnergyToActivateGenAction } from '../../utils/activityCalculations'
-import { ResourceName, ResourceNameNotEnergy } from '../../utils/definitions'
-import { experienceForNextMasteryLevel } from '../../utils/experience'
+import { canActivateGenAction, canDecreaseCurrentLevel, canIncreaseCurrentLevel, canUpgradeGenAction, genActionCooldownTime, genActionEnergyUsage, genActionExtraResourceUsage, genActionLevelupResourceName, genActionName, genActionNextLevelResourceNeeded,
+  genActionResourceGenerated, hasEnoughEnergyToActivateGenAction, hasEnoughExtraResourceToActivateGenAction } from '../calculations/activityCalculations'
+import { experienceForNextMasteryLevel } from '../calculations/experience'
 import { integerPart, oneDecimal, resourceCost } from '../../utils/formatters'
-import { Player } from '../../utils/player'
+import { Player } from '../definitions/player'
+import { ResourceName, ResourceNameNotEnergy } from '../definitions/resourceDefinitions'
 import './GenAction.css'
 
 type GenActionPropType = {
@@ -32,6 +32,8 @@ export const GenAction = (props: GenActionPropType) => {
   const name = genActionName(props.forResourceName, currentLevel)
   const energyUsed = genActionEnergyUsage(props.forResourceName, currentLevel);
   const hasEnoughEnergyClass = hasEnoughEnergyToActivateGenAction(props.player, props.forResourceName) ? '' : 'notenoughresource';
+  const extraResourceUsed = genActionExtraResourceUsage(props.forResourceName, currentLevel);
+  const hasEnoughtExtraResourceClass = hasEnoughExtraResourceToActivateGenAction(props.player, props.forResourceName) ? '' : 'notenoughresource';
 
   const mastery = genActionMastery.mastery;
   const currentExp = genActionMastery.experience;
@@ -55,7 +57,12 @@ export const GenAction = (props: GenActionPropType) => {
       <div className='genactioncdn'>{cooldownLeftTxt}</div>
       <div className='genactiontextcontainer'>
         <div className='genactiontext'>{name}</div>
-        <div className={'genactioncost ' + hasEnoughEnergyClass}>{resourceCost(ResourceName.ENERGY, energyUsed)}</div>
+        <div>
+          <span className={'genactioncost ' + hasEnoughEnergyClass}>{resourceCost(ResourceName.ENERGY, energyUsed)}</span>
+          {extraResourceUsed &&
+          <span className={'genactioncost ' + hasEnoughtExtraResourceClass}>{resourceCost(extraResourceUsed.resourceName, extraResourceUsed.amount)}</span>
+          }
+        </div>
       </div>
       
       {
