@@ -81,7 +81,7 @@ export const levelUpSkill = (player: Player, skillName: SkillName) => {
     if (resourceUnlock && resourceUnlock.skillLevelNeeded <= newPlayer.skills[skillName].level) {
       newPlayer.resources[resourceUnlock.resourceName].unlocked = true;
     }
-    SkillDefinitions[skillName].levelupImpact(newPlayer);
+    SkillDefinitions[skillName].levelupImpact?.(newPlayer);
     return newPlayer;
   } else {
     return player;

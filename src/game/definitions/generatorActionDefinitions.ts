@@ -33,7 +33,7 @@ const KnowledgeGeneratorActionDefinition: GeneratorActionDefinition = {
     'Knowledge level 10', 'Read Knuth\'s Volume 4'
   ],
   baseEnergyUsage: 30,
-  resourceGenerated: 2,
+  resourceGenerated: 3,
   cooldownTime: 5,
   baseExperience: 10,
   levelUpResourceName: ResourceName.KNOWLEDGE,

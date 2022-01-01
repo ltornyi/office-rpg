@@ -50,7 +50,7 @@ type SkillLevelingSetup = {
 
 export type SkillDefinitionType = {
   name: SkillName,
-  levelupImpact: Function,
+  levelupImpact?: (pl: Player) => void,
   description: string,
   resourceUnlock: SkillResourceUnlockType | null,
   levelingSetup: SkillLevelingSetup[],
@@ -140,19 +140,18 @@ const ResilienceDefinition: SkillDefinitionType = {
   name: SkillName.RESILIENCE,
   resourceUnlock: null,
   levelingSetup: [{resourceName: ResourceName.PRODUCTIVITY, initialCost: 50, costMultiplier: 1.15}],
-  levelupImpact: (player: Player) => player.resources[ResourceName.ENERGY].regenIncreasePercent += 5,
-  description: '<div>Gain +5% Energy / second</div>',
+  levelupImpact: (player: Player) => player.resources[ResourceName.ENERGY].regenIncreasePercent += 10,
+  description: '<div>Gain +10% Energy / second</div>',
 };
 
 const AgilityDefinition: SkillDefinitionType = {
   name: SkillName.AGILITY,
   resourceUnlock: null,
   levelingSetup: [
-    {resourceName: ResourceName.PRODUCTIVITY, initialCost: 50, costMultiplier: 1.15},
+    {resourceName: ResourceName.PRODUCTIVITY, initialCost: 15, costMultiplier: 1.15},
     {resourceName: ResourceName.INFLUENCE, initialCost: 40, costMultiplier: 1.15}
   ],
-  levelupImpact: (player: Player) => player.resources[ResourceName.ENERGY].regenIncreasePercent += 5,
-  description: '<div>-5% cooldown time</div><div>Gain +5% Energy / second</div>',
+  description: '<div>-5% cooldown time</div>',
 };
 
 const IdeaManagementDefinition: SkillDefinitionType = {
