@@ -152,7 +152,7 @@ const AgilityDefinition: SkillDefinitionType = {
     {resourceName: ResourceName.INFLUENCE, initialCost: 40, costMultiplier: 1.15}
   ],
   levelupImpact: (player: Player) => player.resources[ResourceName.ENERGY].regenIncreasePercent += 5,
-  description: '<div>-5% cooldown time</div>',
+  description: '<div>-5% cooldown time</div><div>Gain +5% Energy / second</div>',
 };
 
 const IdeaManagementDefinition: SkillDefinitionType = {
@@ -170,11 +170,11 @@ const DesignThinkingDefinition: SkillDefinitionType = {
   name: SkillName.DESIGN_THINKING,
   resourceUnlock: {resourceName: ResourceName.DESIGNS, skillLevelNeeded: 2},
   levelingSetup: [
-    {resourceName: ResourceName.CONCEPTS, initialCost: 70, costMultiplier: 1.15},
     {resourceName: ResourceName.KNOWLEDGE, initialCost: 100, costMultiplier: 1.15},
+    {resourceName: ResourceName.CONCEPTS, initialCost: 70, costMultiplier: 1.15},
   ],
   levelupImpact: (player: Player) => player.resources[ResourceName.CONCEPTS].baseIncreaseAmount += 5,
-  description: '<div>Gain +10 Concepts capacity</div><div>+1 Influence gained</div>',
+  description: '<div>Gain +5 Concepts capacity</div><div>+1 Influence gained</div>',
   exceptionalVisibility: (player: Player) => player.upgrades[UpgradeName.DISCOVER_DESIGN].unlocked
 };
 

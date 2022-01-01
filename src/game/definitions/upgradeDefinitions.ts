@@ -62,7 +62,7 @@ const SwitchToMacUpgradeDefinition: UpgradeDefinitionType = {
 
 const PileOrFileUpgradeDefinition: UpgradeDefinitionType = {
   name: UpgradeName.PILE_OR_FILE,
-  description: 'Pile or file? Neither - now memory improves productivity capacity',
+  description: 'Pile or file? Neither - now memory improves productivity gains',
   cost: [{resourceName:ResourceName.KNOWLEDGE, amount: 120}],
   visible: (player: Player) => player.skills[SkillName.MEMORY].level >= 12
 }
