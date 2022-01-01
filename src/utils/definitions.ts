@@ -5,7 +5,9 @@ export enum ResourceName {
   ENERGY = 'Energy',
   PRODUCTIVITY = 'Productivity',
   KNOWLEDGE = 'Knowledge',
-  INFLUENCE = 'Influence'
+  INFLUENCE = 'Influence',
+  CONCEPTS = 'Concepts',
+  
 }
 
 export type ResourceNameNotEnergy = Exclude<ResourceName, ResourceName.ENERGY>
@@ -15,6 +17,7 @@ export const ResourceNameLookup = {
   'Productivity': ResourceName.PRODUCTIVITY,
   'Knowledge': ResourceName.KNOWLEDGE,
   'Influence': ResourceName.INFLUENCE,
+  'Concepts': ResourceName.CONCEPTS,
 }
 
 export const ResourceEnumFromString = (str: string) => {
@@ -61,6 +64,7 @@ export enum UpgradeName {
   SWITCH_TO_MAC = 'Switch to Mac',
   PILE_OR_FILE = 'Pile or File',
   DIGITAL_LIBRARY = 'Digital Library',
+  PRODUCT_MANIFESTO = 'The Product Manifesto',
 }
 
 export const UpgradeNameLookup = {
@@ -68,7 +72,8 @@ export const UpgradeNameLookup = {
   'Practicing mirror': UpgradeName.PRACTICING_MIRROR,
   'Switch to Mac': UpgradeName.SWITCH_TO_MAC,
   'Pile or File': UpgradeName.PILE_OR_FILE,
-  'Digital Library': UpgradeName.DIGITAL_LIBRARY
+  'Digital Library': UpgradeName.DIGITAL_LIBRARY,
+  'The Product Manifesto': UpgradeName.PRODUCT_MANIFESTO
 }
 
 export const UpgradeEnumFromString = (str: string) => {
@@ -108,11 +113,18 @@ const InfluenceDefinition: ResourceDefinitionType = {
   regenPerSec: 0
 }
 
+const ConceptsDefinition: ResourceDefinitionType = {
+  name: ResourceName.CONCEPTS,
+  baseCapacity: 40,
+  regenPerSec: 0
+}
+
 export const ResourceDefinitions = {
   [ResourceName.ENERGY]: EnergyDefinition,
   [ResourceName.PRODUCTIVITY]: ProductivityDefinition,
   [ResourceName.KNOWLEDGE]: KnowledgeDefinition,
-  [ResourceName.INFLUENCE]: InfluenceDefinition
+  [ResourceName.INFLUENCE]: InfluenceDefinition,
+  [ResourceName.CONCEPTS]: ConceptsDefinition
 }
 
 type SkillResourceUnlockType = {
@@ -298,10 +310,25 @@ const InfluenceGeneratorActionDefinition: GeneratorActionDefinition = {
   levelUpResourceBaseAmount: 25
 }
 
+const ConceptsGeneratorActionDefinition: GeneratorActionDefinition = {
+  forResourceName: ResourceName.CONCEPTS,
+  levelNames: ['Look at App Store listings', 'Research the problem', 'Talk to customers', 'Ideas level 4', 'Ideas level 5',
+    'Influence level 6', 'Ideas level 7', 'Ideas level 8', 'Ideas level 9',
+    'Ideas level 10', 'Tap into the galactic intelligence'
+  ],
+  baseEnergyUsage: 90,
+  resourceGenerated: 5,
+  cooldownTime: 6,
+  baseExperience: 12,
+  levelUpResourceName: ResourceName.KNOWLEDGE,
+  levelUpResourceBaseAmount: 20
+}
+
 export const GeneratorActionDefinitions = {
   [ResourceName.PRODUCTIVITY]: ProductivityGeneratorActionDefinition,
   [ResourceName.KNOWLEDGE]: KnowledgeGeneratorActionDefinition,
   [ResourceName.INFLUENCE]: InfluenceGeneratorActionDefinition,
+  [ResourceName.CONCEPTS]: ConceptsGeneratorActionDefinition,
 }
 
 type UpgradeDefinitionType = {
@@ -336,7 +363,7 @@ const SwitchToMacUpgradeDefinition: UpgradeDefinitionType = {
 
 const PileOrFileUpgradeDefinition: UpgradeDefinitionType = {
   name: UpgradeName.PILE_OR_FILE,
-  description: 'Pile or file? Neither - now memory improves productivity gains',
+  description: 'Pile or file? Neither - now memory improves productivity capacity',
   cost: [{resourceName:ResourceName.KNOWLEDGE, amount: 120}],
   visible: (player: Player) => player.skills[SkillName.MEMORY].level >= 12
 }
@@ -348,10 +375,22 @@ const DigitalLibraryUpgradeDefinition: UpgradeDefinitionType = {
   visible: (player: Player) => player.skills[SkillName.TECH_LEADERSHIP].level >= 1
 }
 
+const ProductManifestoUpgradeDefinition: UpgradeDefinitionType = {
+  name: UpgradeName.PRODUCT_MANIFESTO,
+  description: 'Unlocks new ideas',
+  cost: [
+    {resourceName:ResourceName.ENERGY, amount: 1000},
+    {resourceName:ResourceName.KNOWLEDGE, amount: 100},
+    {resourceName:ResourceName.INFLUENCE, amount: 100}
+  ],
+  visible: (player: Player) => player.skills[SkillName.TECH_LEADERSHIP].level >= 1
+}
+
 export const UpgradeDefinitions = {
   [UpgradeName.MAGNIFYING_APP]: MagnifyingAppUpgradeDefinition,
   [UpgradeName.PRACTICING_MIRROR]: PracticingMirrorUpgradeDefinition,
   [UpgradeName.SWITCH_TO_MAC]: SwitchToMacUpgradeDefinition,
   [UpgradeName.PILE_OR_FILE]: PileOrFileUpgradeDefinition,
-  [UpgradeName.DIGITAL_LIBRARY]: DigitalLibraryUpgradeDefinition
+  [UpgradeName.DIGITAL_LIBRARY]: DigitalLibraryUpgradeDefinition,
+  [UpgradeName.PRODUCT_MANIFESTO]: ProductManifestoUpgradeDefinition
 }

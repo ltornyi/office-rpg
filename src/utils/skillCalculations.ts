@@ -2,14 +2,15 @@ import { ResourceName, SkillDefinitions, SkillEnumFromString, SkillName } from "
 import { Player } from "./player";
 
 export const skillVisible = (player: Player, skill: SkillName) => {
-  //if the skill is leveled, then it's visible
-  if (player.skills[skill].level > 0)
+  //if the skill was seen already or leveled, then it's visible
+  if (player.skills[skill].seen || player.skills[skill].level > 0)
     return true;
   //if the skill has special visibility rules, then only those apply:
   if (SkillDefinitions[skill].exceptionalVisibility) {
     return SkillDefinitions[skill].exceptionalVisibility!(player) //my typescript compiler needs the !
   }
-  //otherwise if the skill is at level 0, then it's visible if the player has 70% of all resources needed for level 1 of the skill
+  //otherwise if the skill is at level 0 and we haven't seen the skill yet,
+  // then it's visible if the player has 70% of all resources needed for level 1 of the skill
   const levelingSetup = SkillDefinitions[skill].levelingSetup;
   let hasEnough = true;
   for (const lvlSetup of levelingSetup) {
