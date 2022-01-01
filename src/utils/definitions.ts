@@ -36,7 +36,8 @@ export enum SkillName {
   ENTERPRISE_LEADERSHIP = 'Enterprise Leadership',
   TECH_LEADERSHIP = 'Tech Leadership',
   RESILIENCE = 'Resilience',
-  AGILITY = 'Agility'
+  AGILITY = 'Agility',
+  IDEA_MANAGEMENT = 'Idea Management',
 }
 
 export const SkillNameLookup = {
@@ -48,7 +49,8 @@ export const SkillNameLookup = {
   'Enterprise Leadership': SkillName.ENTERPRISE_LEADERSHIP,
   'Tech Leadership': SkillName.TECH_LEADERSHIP,
   'Resilience': SkillName.RESILIENCE,
-  'Agility': SkillName.AGILITY
+  'Agility': SkillName.AGILITY,
+  'Idea Management': SkillName.IDEA_MANAGEMENT
 }
 
 export const SkillEnumFromString = (str: string) => {
@@ -245,6 +247,17 @@ const AgilityDefinition: SkillDefinitionType = {
   description: '<div>-5% cooldown time</div>',
 };
 
+const IdeaManagementDefinition: SkillDefinitionType = {
+  name: SkillName.IDEA_MANAGEMENT,
+  resourceUnlock: null,
+  levelingSetup: [
+    {resourceName: ResourceName.INFLUENCE, initialCost: 50, costMultiplier: 1.15},
+    {resourceName: ResourceName.CONCEPTS, initialCost: 2, costMultiplier: 1.15}
+  ],
+  levelupImpact: (player: Player) => player.resources[ResourceName.CONCEPTS].baseIncreasePercent += 10,
+  description: '<div>+10% Concepts capacity</div>',
+};
+
 export const SkillDefinitions = {
   [SkillName.FOCUS]: FocusDefinition,
   [SkillName.MEMORY]: MemoryDefinition,
@@ -255,6 +268,7 @@ export const SkillDefinitions = {
   [SkillName.TECH_LEADERSHIP]: TechLeadershipDefinition,
   [SkillName.RESILIENCE]: ResilienceDefinition,
   [SkillName.AGILITY]: AgilityDefinition,
+  [SkillName.IDEA_MANAGEMENT]: IdeaManagementDefinition,
 }
 
 type GeneratorActionDefinition = {
@@ -370,7 +384,7 @@ const PileOrFileUpgradeDefinition: UpgradeDefinitionType = {
 
 const DigitalLibraryUpgradeDefinition: UpgradeDefinitionType = {
   name: UpgradeName.DIGITAL_LIBRARY,
-  description: 'Tech leadership generates extra knowledge',
+  description: 'Tech leadership generates extra knowledge. Also expands Concepts capacity.',
   cost: [{resourceName:ResourceName.KNOWLEDGE, amount: 120}],
   visible: (player: Player) => player.skills[SkillName.TECH_LEADERSHIP].level >= 1
 }
