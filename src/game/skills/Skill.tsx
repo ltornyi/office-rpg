@@ -1,5 +1,5 @@
 import { SkillDefinitions, SkillName } from '../../utils/definitions';
-import { oneDecimal } from '../../utils/formatters';
+import { resourceCost } from '../../utils/formatters';
 import { Player } from '../../utils/player';
 import { CalcCanLevelup, calcLevelingCosts, canLevelUp, SkillCanLevelUpArr, SkillLevelingCosts } from '../../utils/skillCalculations';
 import './Skill.css';
@@ -37,7 +37,7 @@ const SkillUpgradeCosts = (props: {costs: SkillLevelingCosts, canLevelArr: Skill
       {props.costs.map( c => {
         const canLevelItem = props.canLevelArr.find((item) => item.resourceName === c.resourceName);
         const canLevel = canLevelItem && canLevelItem.canLevel;
-        const resText = c.resourceName.substring(0,1) + ' : ' + oneDecimal(c.cost)
+        const resText = resourceCost(c.resourceName, c.cost)
         return <span key={props.skillName + '-' + c.resourceName} className={canLevel ? '' : 'notenoughresource'}>{resText}</span>
       })}
     </div>

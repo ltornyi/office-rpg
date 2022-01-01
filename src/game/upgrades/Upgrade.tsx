@@ -2,7 +2,7 @@ import './Upgrade.css';
 import { UpgradeDefinitions, UpgradeName } from "../../utils/definitions"
 import { Player } from "../../utils/player"
 import { CalcCanAffordUpgrade, canAffordUpgrade, canAffordUpgradeResourceArr } from "../../utils/upgradeCalculations"
-import { oneDecimal } from '../../utils/formatters';
+import { resourceCost } from '../../utils/formatters';
 
 type UpgradePropType = {
   player: Player,
@@ -33,7 +33,7 @@ const UpgradeCosts = (props: {canAffordArr: canAffordUpgradeResourceArr, upgrade
       {UpgradeDefinitions[props.upgradeName].cost.map( c => {
         const canAffordItem = props.canAffordArr.find((item) => item.resourceName === c.resourceName);
         const canAfford = canAffordItem && canAffordItem.hasEnough;
-        const resText = c.resourceName.substring(0,1) + ' : ' + oneDecimal(c.amount)
+        const resText = resourceCost(c.resourceName, c.amount);
         return <span key={props.upgradeName + '-' + c.resourceName} className={canAfford ? '' : 'notenoughresource'}>{resText}</span>
       })}
     </div>

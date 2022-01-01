@@ -1,8 +1,8 @@
 import { canActivateGenAction, canDecreaseCurrentLevel, canIncreaseCurrentLevel, canUpgradeGenAction, genActionCooldownTime, genActionEnergyUsage, genActionLevelupResourceName, genActionName, genActionNextLevelResourceNeeded,
   genActionResourceGenerated, hasEnoughEnergyToActivateGenAction } from '../../utils/activityCalculations'
-import { ResourceNameNotEnergy } from '../../utils/definitions'
+import { ResourceName, ResourceNameNotEnergy } from '../../utils/definitions'
 import { experienceForNextMasteryLevel } from '../../utils/experience'
-import { integerPart, oneDecimal } from '../../utils/formatters'
+import { integerPart, oneDecimal, resourceCost } from '../../utils/formatters'
 import { Player } from '../../utils/player'
 import './GenAction.css'
 
@@ -55,7 +55,7 @@ export const GenAction = (props: GenActionPropType) => {
       <div className='genactioncdn'>{cooldownLeftTxt}</div>
       <div className='genactiontextcontainer'>
         <div className='genactiontext'>{name}</div>
-        <div className={'genactioncost ' + hasEnoughEnergyClass}>{'E : ' + oneDecimal(energyUsed)}</div>
+        <div className={'genactioncost ' + hasEnoughEnergyClass}>{resourceCost(ResourceName.ENERGY, energyUsed)}</div>
       </div>
       
       {
