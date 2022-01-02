@@ -58,7 +58,7 @@ type SkillCanLevelUp = {
 
 export type SkillCanLevelUpArr = SkillCanLevelUp[]
 
-export const CalcCanLevelup = (player: Player, costs: SkillLevelingCosts) => {
+export const calcCanLevelup = (player: Player, costs: SkillLevelingCosts) => {
   const can: SkillCanLevelUpArr = [];
   for (const levelCost of costs) {
     const thisCan = levelCost.cost <= player.resources[levelCost.resourceName].value;

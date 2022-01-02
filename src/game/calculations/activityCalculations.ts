@@ -4,9 +4,7 @@ import { ResourceEnumFromString, ResourceName, ResourceNameNotEnergy } from "../
 import { SkillName } from "../definitions/skillDefinitions";
 import { UpgradeName } from "../definitions/upgradeDefinitions";
 
-export const generatorActionVisible = (player: Player, forResourceName: ResourceNameNotEnergy) => {
-  return player.resources[forResourceName].unlocked
-}
+export const generatorActionVisible = (player: Player, forResourceName: ResourceNameNotEnergy) => player.resources[forResourceName].unlocked
 
 export const hasVisibleGeneratorAction = (player: Player) => {
   let has = false;

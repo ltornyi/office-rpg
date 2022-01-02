@@ -2,7 +2,7 @@ import { canActivateGenAction, canDecreaseCurrentLevel, canIncreaseCurrentLevel,
 import { generatorActionLevel, playerActivitiesLevel } from "./calculations/experience";
 import { clonePlayer, Player, TgeneratorActionMasteryLevel, TgeneratorActionMasteryLevels, Tresource, Tresources } from "./definitions/player";
 import { resourceCapacity, resourceRegenRate } from "./calculations/resourceCalculations";
-import { CalcCanLevelup, calcLevelingCosts, canLevelUp, skillVisible } from "./calculations/skillCalculations";
+import { calcCanLevelup, calcLevelingCosts, canLevelUp, skillVisible } from "./calculations/skillCalculations";
 import { canAffordUpgrade, upgradeVisible } from "./calculations/upgradeCalculations";
 import { ResourceEnumFromString, ResourceName, ResourceNameNotEnergy } from "./definitions/resourceDefinitions";
 import { UpgradeDefinitions, UpgradeEnumFromString, UpgradeName } from "./definitions/upgradeDefinitions";
@@ -71,7 +71,7 @@ const processSkillsSeen = (player: Player) =>
 export const levelUpSkill = (player: Player, skillName: SkillName) => {
   const skill = player.skills[skillName];
   const levelingCosts = calcLevelingCosts(skillName, skill.level);
-  const canLevelArr = CalcCanLevelup(player, levelingCosts);
+  const canLevelArr = calcCanLevelup(player, levelingCosts);
   const canLevel = canLevelUp(canLevelArr);
   if (canLevel) {
     const newPlayer = clonePlayer(player);

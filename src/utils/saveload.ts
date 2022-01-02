@@ -19,9 +19,7 @@ export const getSaveSlotInfo = (slot: number) => {
   return info;
 }
 
-export const deleteSaveSlot = (slot: number) => {
-  localStorage.removeItem(saveName(slot));
-}
+export const deleteSaveSlot = (slot: number) => localStorage.removeItem(saveName(slot))
 
 export const loadSaveSlot = (slot: number): Player => {
   const savegame = localStorage.getItem(saveName(slot));
@@ -36,6 +34,4 @@ export const loadSaveSlot = (slot: number): Player => {
   return newPlayer;
 }
 
-export const savePlayerToSlot = (player: Player, slot: number) => {
-  localStorage.setItem(saveName(slot), JSON.stringify(player));
-}
+export const savePlayerToSlot = (player: Player, slot: number) => localStorage.setItem(saveName(slot), JSON.stringify(player))

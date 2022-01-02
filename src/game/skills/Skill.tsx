@@ -1,6 +1,6 @@
 import { resourceCost } from '../../utils/formatters';
 import { Player } from '../definitions/player';
-import { CalcCanLevelup, calcLevelingCosts, canLevelUp, SkillCanLevelUpArr, SkillLevelingCosts } from '../calculations/skillCalculations';
+import { calcCanLevelup, calcLevelingCosts, canLevelUp, SkillCanLevelUpArr, SkillLevelingCosts } from '../calculations/skillCalculations';
 import './Skill.css';
 import { SkillDefinitions, SkillName } from '../definitions/skillDefinitions';
 
@@ -13,7 +13,7 @@ type SkillPropType = {
 export const Skill = (props: SkillPropType) => {
   const skill = props.player.skills[props.skillName];
   const levelingCosts = calcLevelingCosts(props.skillName, skill.level);
-  const canLevelArr = CalcCanLevelup(props.player, levelingCosts);
+  const canLevelArr = calcCanLevelup(props.player, levelingCosts);
   const canLevel = canLevelUp(canLevelArr);
   const description = SkillDefinitions[props.skillName].dynamicDescription ? SkillDefinitions[props.skillName].dynamicDescription!(props.player) : SkillDefinitions[props.skillName].description;
   return (

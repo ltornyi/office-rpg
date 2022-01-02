@@ -24,7 +24,7 @@ type canAffordUpgradeResource = {
 
 export type canAffordUpgradeResourceArr = canAffordUpgradeResource[]
 
-export const CalcCanAffordUpgrade = (player: Player, upgrade: UpgradeName) => {
+export const calcCanAffordUpgrade = (player: Player, upgrade: UpgradeName) => {
   const can: canAffordUpgradeResourceArr = [];
   const costs = UpgradeDefinitions[upgrade].cost;
   for (const cost of costs) {
@@ -35,7 +35,7 @@ export const CalcCanAffordUpgrade = (player: Player, upgrade: UpgradeName) => {
 }
 
 export const canAffordUpgrade = (player: Player, upgrade: UpgradeName, arr?: canAffordUpgradeResourceArr) => {
-  const canArr = arr ? arr: CalcCanAffordUpgrade(player, upgrade);
+  const canArr = arr ? arr: calcCanAffordUpgrade(player, upgrade);
   let canAfford = true;
   for (const can of canArr) {
     if (canAfford && !can.hasEnough) {

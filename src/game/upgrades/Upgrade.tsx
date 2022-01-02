@@ -1,6 +1,6 @@
 import './Upgrade.css';
 import { Player } from "../definitions/player"
-import { CalcCanAffordUpgrade, canAffordUpgrade, canAffordUpgradeResourceArr } from "../calculations/upgradeCalculations"
+import { calcCanAffordUpgrade, canAffordUpgrade, canAffordUpgradeResourceArr } from "../calculations/upgradeCalculations"
 import { resourceCost } from '../../utils/formatters';
 import { UpgradeDefinitions, UpgradeName } from '../definitions/upgradeDefinitions';
 
@@ -11,7 +11,7 @@ type UpgradePropType = {
 
 }
 export const Upgrade = (props: UpgradePropType) => {
-  const canAffordArr = CalcCanAffordUpgrade(props.player, props.upgradeName);
+  const canAffordArr = calcCanAffordUpgrade(props.player, props.upgradeName);
   const canAfford = canAffordUpgrade(props.player, props.upgradeName, canAffordArr);
   return (
     <div
