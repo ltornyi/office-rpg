@@ -24,24 +24,13 @@ type canAffordUpgradeResource = {
 
 export type canAffordUpgradeResourceArr = canAffordUpgradeResource[]
 
-export const calcCanAffordUpgrade = (player: Player, upgrade: UpgradeName) => {
-  const can: canAffordUpgradeResourceArr = [];
-  const costs = UpgradeDefinitions[upgrade].cost;
-  for (const cost of costs) {
-    const thisHasEnough = cost.amount <= player.resources[cost.resourceName].value;
-    can.push({resourceName: cost.resourceName, hasEnough: thisHasEnough});
-  }
-  return can;
-}
+export const calcCanAffordUpgrade = (player: Player, upgrade: UpgradeName) => 
+  UpgradeDefinitions[upgrade].cost
+  .map( cost => ({
+    resourceName: cost.resourceName,
+    hasEnough: cost.amount <= player.resources[cost.resourceName].value
+  }) as canAffordUpgradeResource);
 
-export const canAffordUpgrade = (player: Player, upgrade: UpgradeName, arr?: canAffordUpgradeResourceArr) => {
-  const canArr = arr ? arr: calcCanAffordUpgrade(player, upgrade);
-  let canAfford = true;
-  for (const can of canArr) {
-    if (canAfford && !can.hasEnough) {
-      canAfford = false;
-      break;
-    }
-  }
-  return canAfford;
-}
+export const canAffordUpgrade = (player: Player, upgrade: UpgradeName, arr?: canAffordUpgradeResourceArr) =>
+  (arr ? arr: calcCanAffordUpgrade(player, upgrade))
+    .findIndex( can => !can.hasEnough) === -1
