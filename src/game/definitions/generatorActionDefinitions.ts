@@ -80,7 +80,7 @@ const DesignsGeneratorActionDefinition: GeneratorActionDefinition = {
   baseExperience: 12,
   levelUpResourceName: ResourceName.KNOWLEDGE,
   levelUpResourceBaseAmount: 20,
-  extraResourceUsage: {resourceName: ResourceName.CONCEPTS, baseUsage: 10, multiplier: 1.2}
+  extraResourceUsage: {resourceName: ResourceName.CONCEPTS, baseUsage: 10, multiplier: 2}
 }
 
 export const GeneratorActionDefinitions = {
